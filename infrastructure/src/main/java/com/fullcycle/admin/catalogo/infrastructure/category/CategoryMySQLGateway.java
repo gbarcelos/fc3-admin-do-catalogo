@@ -8,45 +8,44 @@ import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import java.util.List;
 import java.util.Optional;
 
+import com.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import com.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CategoryMySQLGateway implements CategoryGateway {
 
-    private final CategoryRepository repository;
+  private final CategoryRepository repository;
 
-    public CategoryMySQLGateway(final CategoryRepository repository) {
-        this.repository = repository;
-    }
+  public CategoryMySQLGateway(final CategoryRepository repository) {
+    this.repository = repository;
+  }
 
-    @Override
-    public Category create(Category aCategory) {
-        return null;
-    }
+  @Override
+  public Category create(Category aCategory) {
+    return repository.save(CategoryJpaEntity.from(aCategory)).toAggregate();
+  }
 
-    @Override
-    public void deleteById(CategoryID anId) {
+  @Override
+  public void deleteById(CategoryID anId) {}
 
-    }
+  @Override
+  public Optional<Category> findById(CategoryID anId) {
+    return Optional.empty();
+  }
 
-    @Override
-    public Optional<Category> findById(CategoryID anId) {
-        return Optional.empty();
-    }
+  @Override
+  public Category update(Category aCategory) {
+    return null;
+  }
 
-    @Override
-    public Category update(Category aCategory) {
-        return null;
-    }
+  @Override
+  public Pagination<Category> findAll(CategorySearchQuery aQuery) {
+    return null;
+  }
 
-    @Override
-    public Pagination<Category> findAll(CategorySearchQuery aQuery) {
-        return null;
-    }
-
-    @Override
-    public List<CategoryID> existsByIds(Iterable<CategoryID> ids) {
-        return null;
-    }
+  @Override
+  public List<CategoryID> existsByIds(Iterable<CategoryID> ids) {
+    return null;
+  }
 }
