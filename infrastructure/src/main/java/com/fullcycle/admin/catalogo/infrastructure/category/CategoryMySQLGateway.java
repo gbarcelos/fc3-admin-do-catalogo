@@ -27,7 +27,12 @@ public class CategoryMySQLGateway implements CategoryGateway {
   }
 
   @Override
-  public void deleteById(final CategoryID anId) {}
+  public void deleteById(final CategoryID anId) {
+    final String anIdValue = anId.getValue();
+    if (repository.existsById(anIdValue)) {
+      repository.deleteById(anIdValue);
+    }
+  }
 
   @Override
   public Optional<Category> findById(final CategoryID anId) {
@@ -49,7 +54,7 @@ public class CategoryMySQLGateway implements CategoryGateway {
     return null;
   }
 
-  private Category save(final Category aCategory){
+  private Category save(final Category aCategory) {
     return repository.save(CategoryJpaEntity.from(aCategory)).toAggregate();
   }
 }
