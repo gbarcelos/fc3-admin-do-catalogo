@@ -5,12 +5,17 @@ import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.category.CategorySearchQuery;
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
-import java.util.List;
-import java.util.Optional;
-
 import com.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import com.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
+import com.fullcycle.admin.catalogo.infrastructure.utils.SpecificationUtils;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import static com.fullcycle.admin.catalogo.infrastructure.utils.SpecificationUtils.like;
 
 @Service
 public class CategoryMySQLGateway implements CategoryGateway {
@@ -46,7 +51,33 @@ public class CategoryMySQLGateway implements CategoryGateway {
 
   @Override
   public Pagination<Category> findAll(final CategorySearchQuery aQuery) {
-    return null;
+
+    // Paginação
+    final var page =
+        PageRequest.of(
+            aQuery.page(),
+            aQuery.perPage(),
+            Sort.by(Sort.Direction.fromString(aQuery.direction()), aQuery.sort()));
+
+    // Busca dinamica pelo criterio terms (name ou description)
+    final var specifications =
+        Optional.ofNullable(aQuery.terms())
+            .filter(str -> !str.isBlank())
+            .map(
+                str -> {
+                  final Specification<CategoryJpaEntity> nameLike = like("name", str);
+                  final Specification<CategoryJpaEntity> descriptionLike = like("description", str);
+                  return nameLike.or(descriptionLike);
+                })
+            .orElse(null);
+
+    final var pageResult = this.repository.findAll(Specification.where(specifications), page);
+
+    return new Pagination<>(
+        pageResult.getNumber(),
+        pageResult.getSize(),
+        pageResult.getTotalElements(),
+        pageResult.map(CategoryJpaEntity::toAggregate).toList());
   }
 
   @Override
