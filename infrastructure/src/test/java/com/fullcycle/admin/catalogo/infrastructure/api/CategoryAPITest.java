@@ -12,11 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullcycle.admin.catalogo.ControllerTest;
 import com.fullcycle.admin.catalogo.application.category.create.CreateCategoryOutput;
 import com.fullcycle.admin.catalogo.application.category.create.CreateCategoryUseCase;
-
-import java.util.Objects;
-
-import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryApiInput;
+import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -42,7 +39,7 @@ public class CategoryAPITest {
         new CreateCategoryApiInput(expectedName, expectedDescription, expectedIsActive);
 
     when(createCategoryUseCase.execute(any()))
-        .thenReturn(Right(CreateCategoryOutput.from(CategoryID.from("123"))));
+        .thenReturn(Right(CreateCategoryOutput.from("123")));
 
     final var request =
         post("/categories")

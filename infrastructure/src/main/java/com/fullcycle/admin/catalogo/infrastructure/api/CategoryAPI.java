@@ -1,6 +1,7 @@
 package com.fullcycle.admin.catalogo.infrastructure.api;
 
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
+import com.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryApiInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,7 +24,7 @@ public interface CategoryAPI {
         @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
         @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
       })
-  ResponseEntity<?> createCategory();
+  ResponseEntity<?> createCategory(@RequestBody CreateCategoryApiInput input);
 
   @GetMapping
   @Operation(summary = "List all categories paginated")
