@@ -1,5 +1,6 @@
 package com.fullcycle.admin.catalogo.infrastructure.api.controllers;
 
+import com.fullcycle.admin.catalogo.application.category.create.CreateCategoryUseCase;
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import com.fullcycle.admin.catalogo.infrastructure.api.CategoryAPI;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CategoryController implements CategoryAPI {
+    private final CreateCategoryUseCase createCategoryUseCase;
+
+    public CategoryController(CreateCategoryUseCase createCategoryUseCase) {
+        this.createCategoryUseCase = createCategoryUseCase;
+    }
+
     @Override
     public ResponseEntity<?> createCategory() {
         return null;
