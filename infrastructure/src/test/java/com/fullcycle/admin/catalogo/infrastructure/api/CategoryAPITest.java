@@ -196,14 +196,14 @@ public class CategoryAPITest {
   @Test
   public void givenAInvalidId_whenCallsGetCategory_shouldReturnNotFound() throws Exception {
     // given
-    final var expectedErrorMessage = "Category with ID 123 was not found";
-    final var expectedId = CategoryID.from("123");
+    final var expectedErrorMessage = "Category with ID %s was not found";
+    final var expectedId = CategoryID.from("123").getValue();
 
     when(getCategoryByIdUseCase.execute(any()))
-            .thenThrow(NotFoundException.with(Category.class, expectedId));
+            .thenThrow(DomainException.with(new Error(expectedErrorMessage.formatted(expectedId))));
 
     // when
-    final var request = get("/categories/{id}", expectedId.getValue())
+    final var request = get("/categories/{id}", expectedId)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON);
 
