@@ -36,15 +36,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @ControllerTest(controllers = CategoryAPI.class)
 public class CategoryAPITest {
-
   @Autowired private MockMvc mvc;
-
   @Autowired private ObjectMapper mapper;
-
   @MockBean private CreateCategoryUseCase createCategoryUseCase;
-
   @MockBean private GetCategoryByIdUseCase getCategoryByIdUseCase;
-
   @MockBean private UpdateCategoryUseCase updateCategoryUseCase;
   @MockBean private DeleteCategoryUseCase deleteCategoryUseCase;
 
