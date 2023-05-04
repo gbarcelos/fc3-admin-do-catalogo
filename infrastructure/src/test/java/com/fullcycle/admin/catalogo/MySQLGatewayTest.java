@@ -10,7 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-@ActiveProfiles("test")
+@ActiveProfiles("test-integration")
 @ComponentScan(
     includeFilters = {@ComponentScan.Filter(type = FilterType.REGEX, pattern = ".[MySQLGateway]")})
 @DataJpaTest
