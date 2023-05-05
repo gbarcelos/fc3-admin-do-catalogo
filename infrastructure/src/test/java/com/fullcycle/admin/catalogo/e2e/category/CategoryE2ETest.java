@@ -256,14 +256,15 @@ public class CategoryE2ETest {
 
     final var actualId = givenACategory(expectedName, expectedDescription, false);
 
-    final var aRequestBody = new UpdateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
+    final var aRequestBody =
+        new UpdateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
 
-    final var aRequest = put("/categories/" + actualId.getValue())
+    final var aRequest =
+        put("/categories/" + actualId.getValue())
             .contentType(MediaType.APPLICATION_JSON)
             .content(Json.writeValueAsString(aRequestBody));
 
-    this.mvc.perform(aRequest)
-            .andExpect(status().isOk());
+    this.mvc.perform(aRequest).andExpect(status().isOk());
 
     final var actualCategory = categoryRepository.findById(actualId.getValue()).get();
 
@@ -273,6 +274,21 @@ public class CategoryE2ETest {
     Assertions.assertNotNull(actualCategory.getCreatedAt());
     Assertions.assertNotNull(actualCategory.getUpdatedAt());
     Assertions.assertNull(actualCategory.getDeletedAt());
+  }
+
+  @Test
+  public void asACatalogAdminIShouldBeAbleToDeleteACategoryByItsIdentifier() throws Exception {
+    Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
+    Assertions.assertEquals(0, categoryRepository.count());
+
+    final var actualId = givenACategory("Filmes", null, true);
+
+    this.mvc
+        .perform(
+            delete("/categories/" + actualId.getValue()).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNoContent());
+
+    Assertions.assertFalse(this.categoryRepository.existsById(actualId.getValue()));
   }
 
   private ResultActions listCategories(final int page, final int perPage) throws Exception {
