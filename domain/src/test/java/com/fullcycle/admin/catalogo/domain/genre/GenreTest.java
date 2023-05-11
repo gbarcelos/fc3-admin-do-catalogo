@@ -76,7 +76,7 @@ public class GenreTest {
   }
 
   @Test
-  public void givenAnActiveGenre_whenCallDeactivate_shouldReceiveOK() {
+  public void givenAnActiveGenre_whenCallDeactivate_shouldReceiveOK() throws InterruptedException {
     final var expectedName = "Ação";
     final var expectedIsActive = false;
     final var expectedCategories = 0;
@@ -90,6 +90,7 @@ public class GenreTest {
     final var actualCreatedAt = actualGenre.getCreatedAt();
     final var actualUpdatedAt = actualGenre.getUpdatedAt();
 
+    Thread.sleep(1);
     actualGenre.deactivate();
 
     Assertions.assertNotNull(actualGenre.getId());

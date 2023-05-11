@@ -22,17 +22,33 @@ public class ListCategoriesUseCaseIT {
   @Autowired private CategoryRepository categoryRepository;
 
   @BeforeEach
-  void mockUp() {
+  void mockUp() throws InterruptedException {
+
+    final var filmes = Category.newCategory("Filmes", null, true);
+
+    Thread.sleep(1);
+    final var netflixOriginals =
+        Category.newCategory("Netflix Originals", "Títulos de autoria da Netflix", true);
+
+    Thread.sleep(1);
+    final var amazonOriginals =
+        Category.newCategory("Amazon Originals", "Títulos de autoria da Amazon Prime", true);
+
+    Thread.sleep(1);
+    final var documentarios = Category.newCategory("Documentários", null, true);
+
+    Thread.sleep(1);
+    final var sports = Category.newCategory("Sports", null, true);
+
+    Thread.sleep(1);
+    final var kids = Category.newCategory("Kids", "Categoria para crianças", true);
+
+    Thread.sleep(1);
+    final var series = Category.newCategory("Series", null, true);
+
+    Thread.sleep(1);
     final var categories =
-        Stream.of(
-                Category.newCategory("Filmes", null, true),
-                Category.newCategory("Netflix Originals", "Títulos de autoria da Netflix", true),
-                Category.newCategory(
-                    "Amazon Originals", "Títulos de autoria da Amazon Prime", true),
-                Category.newCategory("Documentários", null, true),
-                Category.newCategory("Sports", null, true),
-                Category.newCategory("Kids", "Categoria para crianças", true),
-                Category.newCategory("Series", null, true))
+        Stream.of(filmes, netflixOriginals, amazonOriginals, documentarios, sports, kids, series)
             .map(CategoryJpaEntity::from)
             .toList();
 
@@ -125,24 +141,24 @@ public class ListCategoriesUseCaseIT {
 
   @ParameterizedTest
   @CsvSource({
-          "0,2,2,7,Amazon Originals;Documentários",
-          "1,2,2,7,Filmes;Kids",
-          "2,2,2,7,Netflix Originals;Series",
-          "3,2,1,7,Sports",
+    "0,2,2,7,Amazon Originals;Documentários",
+    "1,2,2,7,Filmes;Kids",
+    "2,2,2,7,Netflix Originals;Series",
+    "3,2,1,7,Sports",
   })
   public void givenAValidPage_whenCallsListCategories_shouldReturnCategoriesPaginated(
-          final int expectedPage,
-          final int expectedPerPage,
-          final int expectedItemsCount,
-          final long expectedTotal,
-          final String expectedCategoriesName
-  ) {
+      final int expectedPage,
+      final int expectedPerPage,
+      final int expectedItemsCount,
+      final long expectedTotal,
+      final String expectedCategoriesName) {
     final var expectedSort = "name";
     final var expectedDirection = "asc";
     final var expectedTerms = "";
 
     final var aQuery =
-            new CategorySearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
+        new CategorySearchQuery(
+            expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
     final var actualResult = useCase.execute(aQuery);
 

@@ -105,4 +105,20 @@ public class Genre extends AggregateRoot<GenreID> {
     public Instant getDeletedAt() {
         return deletedAt;
     }
+
+    public Genre activate() {
+        this.deletedAt = null;
+        this.active = true;
+        this.updatedAt = InstantUtils.now();
+        return this;
+    }
+
+    public Genre deactivate() {
+        if (getDeletedAt() == null) {
+            this.deletedAt = InstantUtils.now();
+        }
+        this.active = false;
+        this.updatedAt = InstantUtils.now();
+        return this;
+    }
 }
