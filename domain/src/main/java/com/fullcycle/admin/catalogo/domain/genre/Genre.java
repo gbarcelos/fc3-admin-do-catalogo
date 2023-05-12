@@ -14,111 +14,125 @@ import java.util.List;
 
 public class Genre extends AggregateRoot<GenreID> {
 
-    private String name;
-    private boolean active;
-    private List<CategoryID> categories;
-    private Instant createdAt;
-    private Instant updatedAt;
-    private Instant deletedAt;
+  private String name;
+  private boolean active;
+  private List<CategoryID> categories;
+  private Instant createdAt;
+  private Instant updatedAt;
+  private Instant deletedAt;
 
-    protected Genre(
-            final GenreID anId,
-            final String aName,
-            final boolean isActive,
-            final List<CategoryID> categories,
-            final Instant aCreatedAt,
-            final Instant aUpdatedAt,
-            final Instant aDeletedAt
-    ) {
-        super(anId);
-        this.name = aName;
-        this.categories = categories;
-        this.active = isActive;
-        this.createdAt = aCreatedAt;
-        this.updatedAt = aUpdatedAt;
-        this.deletedAt = aDeletedAt;
+  protected Genre(
+      final GenreID anId,
+      final String aName,
+      final boolean isActive,
+      final List<CategoryID> categories,
+      final Instant aCreatedAt,
+      final Instant aUpdatedAt,
+      final Instant aDeletedAt) {
+    super(anId);
+    this.name = aName;
+    this.categories = categories;
+    this.active = isActive;
+    this.createdAt = aCreatedAt;
+    this.updatedAt = aUpdatedAt;
+    this.deletedAt = aDeletedAt;
+    selfValidate();
+  }
 
-        final var notification = Notification.create();
-        validate(notification);
+  public static Genre newGenre(final String aName, final boolean isActive) {
+    final var anId = GenreID.unique();
+    final var now = InstantUtils.now();
+    final var deletedAt = isActive ? null : now;
+    return new Genre(anId, aName, isActive, new ArrayList<>(), now, now, deletedAt);
+  }
 
-        if (notification.hasError()) {
-            throw new NotificationException("Failed to create a Aggregate Genre", notification);
-        }
+  public static Genre with(
+      final GenreID anId,
+      final String aName,
+      final boolean isActive,
+      final List<CategoryID> categories,
+      final Instant aCreatedAt,
+      final Instant aUpdatedAt,
+      final Instant aDeletedAt) {
+    return new Genre(anId, aName, isActive, categories, aCreatedAt, aUpdatedAt, aDeletedAt);
+  }
+
+  public static Genre with(final Genre aGenre) {
+    return new Genre(
+        aGenre.id,
+        aGenre.name,
+        aGenre.active,
+        new ArrayList<>(aGenre.categories),
+        aGenre.createdAt,
+        aGenre.updatedAt,
+        aGenre.deletedAt);
+  }
+
+  @Override
+  public void validate(final ValidationHandler handler) {
+    new GenreValidator(this, handler).validate();
+  }
+
+  public Genre update(
+      final String aName, final boolean isActive, final List<CategoryID> categories) {
+    if (isActive) {
+      activate();
+    } else {
+      deactivate();
     }
+    this.name = aName;
+    this.categories = new ArrayList<>(categories != null ? categories : Collections.emptyList());
+    this.updatedAt = InstantUtils.now();
+    selfValidate();
+    return this;
+  }
 
-    public static Genre newGenre(final String aName, final boolean isActive) {
-        final var anId = GenreID.unique();
-        final var now = InstantUtils.now();
-        final var deletedAt = isActive ? null : now;
-        return new Genre(anId, aName, isActive, new ArrayList<>(), now, now, deletedAt);
-    }
+  public Genre activate() {
+    this.deletedAt = null;
+    this.active = true;
+    this.updatedAt = InstantUtils.now();
+    return this;
+  }
 
-    public static Genre with(
-            final GenreID anId,
-            final String aName,
-            final boolean isActive,
-            final List<CategoryID> categories,
-            final Instant aCreatedAt,
-            final Instant aUpdatedAt,
-            final Instant aDeletedAt
-    ) {
-        return new Genre(anId, aName, isActive, categories, aCreatedAt, aUpdatedAt, aDeletedAt);
+  public Genre deactivate() {
+    if (getDeletedAt() == null) {
+      this.deletedAt = InstantUtils.now();
     }
+    this.active = false;
+    this.updatedAt = InstantUtils.now();
+    return this;
+  }
 
-    public static Genre with(final Genre aGenre) {
-        return new Genre(
-                aGenre.id,
-                aGenre.name,
-                aGenre.active,
-                new ArrayList<>(aGenre.categories),
-                aGenre.createdAt,
-                aGenre.updatedAt,
-                aGenre.deletedAt
-        );
-    }
+  public String getName() {
+    return name;
+  }
 
-    @Override
-    public void validate(final ValidationHandler handler) {
-        new GenreValidator(this, handler).validate();
-    }
+  public boolean isActive() {
+    return active;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public List<CategoryID> getCategories() {
+    return Collections.unmodifiableList(categories);
+  }
 
-    public boolean isActive() {
-        return active;
-    }
+  public Instant getCreatedAt() {
+    return createdAt;
+  }
 
-    public List<CategoryID> getCategories() {
-        return Collections.unmodifiableList(categories);
-    }
+  public Instant getUpdatedAt() {
+    return updatedAt;
+  }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
+  public Instant getDeletedAt() {
+    return deletedAt;
+  }
 
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
+  private void selfValidate() {
+    final var notification = Notification.create();
+    validate(notification);
 
-    public Instant getDeletedAt() {
-        return deletedAt;
+    if (notification.hasError()) {
+      throw new NotificationException("Failed to create a Aggregate Genre", notification);
     }
-
-    public Genre activate() {
-        this.deletedAt = null;
-        this.active = true;
-        this.updatedAt = InstantUtils.now();
-        return this;
-    }
-
-    public Genre deactivate() {
-        if (getDeletedAt() == null) {
-            this.deletedAt = InstantUtils.now();
-        }
-        this.active = false;
-        this.updatedAt = InstantUtils.now();
-        return this;
-    }
+  }
 }
