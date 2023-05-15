@@ -3,11 +3,11 @@ package com.fullcycle.admin.catalogo.infrastructure.category;
 import com.fullcycle.admin.catalogo.domain.category.Category;
 import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
-import com.fullcycle.admin.catalogo.domain.category.CategorySearchQuery;
+import com.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import com.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import com.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
-import com.fullcycle.admin.catalogo.infrastructure.utils.SpecificationUtils;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
@@ -50,7 +50,7 @@ public class CategoryMySQLGateway implements CategoryGateway {
   }
 
   @Override
-  public Pagination<Category> findAll(final CategorySearchQuery aQuery) {
+  public Pagination<Category> findAll(final SearchQuery aQuery) {
 
     // Paginação
     final var page =
