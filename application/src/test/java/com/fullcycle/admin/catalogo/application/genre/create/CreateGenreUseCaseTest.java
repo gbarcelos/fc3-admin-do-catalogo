@@ -1,6 +1,5 @@
 package com.fullcycle.admin.catalogo.application.genre.create;
 
-import com.fullcycle.admin.catalogo.application.category.create.DefaultCreateCategoryUseCase;
 import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import com.fullcycle.admin.catalogo.domain.genre.GenreGateway;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;

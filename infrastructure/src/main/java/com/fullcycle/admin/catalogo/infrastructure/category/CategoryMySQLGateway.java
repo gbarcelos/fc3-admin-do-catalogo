@@ -8,6 +8,7 @@ import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import com.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import com.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
@@ -82,7 +83,8 @@ public class CategoryMySQLGateway implements CategoryGateway {
 
   @Override
   public List<CategoryID> existsByIds(final Iterable<CategoryID> ids) {
-    return null;
+    //TODO: implementar quando chegar na camada de infra
+    return Collections.emptyList();
   }
 
   private Category save(final Category aCategory) {
