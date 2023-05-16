@@ -40,6 +40,8 @@ public class DefaultCreateGenreUseCase extends CreateGenreUseCase {
       throw new NotificationException("Could not create Aggregate Genre", notification);
     }
 
+    aGenre.addCategories(categories);
+
     return CreateGenreOutput.from(this.genreGateway.create(aGenre));
   }
 
@@ -66,6 +68,9 @@ public class DefaultCreateGenreUseCase extends CreateGenreUseCase {
   }
 
   private List<CategoryID> toCategoryID(final List<String> categories) {
+    if (categories == null){
+      return null;
+    }
     return categories.stream().map(CategoryID::from).toList();
   }
 }
