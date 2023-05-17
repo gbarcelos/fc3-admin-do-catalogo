@@ -5,32 +5,28 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-import com.fullcycle.admin.catalogo.application.category.create.CreateCategoryCommand;
+import com.fullcycle.admin.catalogo.application.UseCaseTest;
 import com.fullcycle.admin.catalogo.domain.category.Category;
 import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
-import java.util.Objects;
-import java.util.Optional;
-
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.exceptions.NotFoundException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
-public class UpdateCategoryUseCaseTest {
+public class UpdateCategoryUseCaseTest extends UseCaseTest {
 
   @InjectMocks private DefaultUpdateCategoryUseCase useCase;
   @Mock private CategoryGateway categoryGateway;
 
-  @BeforeEach
-  public void cleanUp() {
-    Mockito.reset(categoryGateway);
+  @Override
+  protected List<Object> getMocks() {
+    return List.of(categoryGateway);
   }
 
   @Test

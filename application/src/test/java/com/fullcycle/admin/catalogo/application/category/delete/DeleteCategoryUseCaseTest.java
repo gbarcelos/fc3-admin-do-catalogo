@@ -3,28 +3,26 @@ package com.fullcycle.admin.catalogo.application.category.delete;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
+import com.fullcycle.admin.catalogo.application.UseCaseTest;
 import com.fullcycle.admin.catalogo.domain.category.Category;
 import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
-public class DeleteCategoryUseCaseTest {
+public class DeleteCategoryUseCaseTest extends UseCaseTest {
 
   @InjectMocks private DefaultDeleteCategoryUseCase useCase;
 
   @Mock private CategoryGateway categoryGateway;
 
-  @BeforeEach
-  public void cleanUp() {
-    Mockito.reset(categoryGateway);
+  @Override
+  protected List<Object> getMocks() {
+    return List.of(categoryGateway);
   }
 
   @Test
@@ -43,8 +41,7 @@ public class DeleteCategoryUseCaseTest {
   public void givenAInvalidId_whenCallsDeleteCategory_shouldBeOK() {
     final var expectedId = CategoryID.from("123");
 
-    doNothing()
-            .when(categoryGateway).deleteById(eq(expectedId));
+    doNothing().when(categoryGateway).deleteById(eq(expectedId));
 
     Assertions.assertDoesNotThrow(() -> useCase.execute(expectedId.getValue()));
 
@@ -57,9 +54,11 @@ public class DeleteCategoryUseCaseTest {
     final var expectedId = aCategory.getId();
 
     doThrow(new IllegalStateException("Gateway error"))
-            .when(categoryGateway).deleteById(eq(expectedId));
+        .when(categoryGateway)
+        .deleteById(eq(expectedId));
 
-    Assertions.assertThrows(IllegalStateException.class, () -> useCase.execute(expectedId.getValue()));
+    Assertions.assertThrows(
+        IllegalStateException.class, () -> useCase.execute(expectedId.getValue()));
 
     Mockito.verify(categoryGateway, times(1)).deleteById(eq(expectedId));
   }

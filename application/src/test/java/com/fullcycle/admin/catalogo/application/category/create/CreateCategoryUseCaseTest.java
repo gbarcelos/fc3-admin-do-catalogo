@@ -6,27 +6,25 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
+import com.fullcycle.admin.catalogo.application.UseCaseTest;
 import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
+import java.util.List;
 import java.util.Objects;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
-public class CreateCategoryUseCaseTest {
+public class CreateCategoryUseCaseTest extends UseCaseTest {
 
   @InjectMocks private DefaultCreateCategoryUseCase useCase;
 
   @Mock private CategoryGateway categoryGateway;
 
-  @BeforeEach
-  public void cleanUp() {
-    Mockito.reset(categoryGateway);
+  @Override
+  protected List<Object> getMocks() {
+    return List.of(categoryGateway);
   }
 
   @Test

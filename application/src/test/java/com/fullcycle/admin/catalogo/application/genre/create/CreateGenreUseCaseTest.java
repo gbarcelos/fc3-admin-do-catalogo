@@ -1,32 +1,34 @@
 package com.fullcycle.admin.catalogo.application.genre.create;
 
-import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
-import com.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
-import com.fullcycle.admin.catalogo.domain.genre.GenreGateway;
-import com.fullcycle.admin.catalogo.domain.category.CategoryID;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Objects;
-
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class CreateGenreUseCaseTest {
+import com.fullcycle.admin.catalogo.application.UseCaseTest;
+import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
+import com.fullcycle.admin.catalogo.domain.category.CategoryID;
+import com.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
+import com.fullcycle.admin.catalogo.domain.genre.GenreGateway;
+import java.util.List;
+import java.util.Objects;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+public class CreateGenreUseCaseTest extends UseCaseTest {
 
   @InjectMocks private DefaultCreateGenreUseCase useCase;
 
   @Mock private CategoryGateway categoryGateway;
   @Mock private GenreGateway genreGateway;
+
+  @Override
+  protected List<Object> getMocks() {
+    return List.of(categoryGateway, genreGateway);
+  }
 
   @Test
   public void givenAValidCommand_whenCallsCreateGenre_shouldReturnGenreId() {
