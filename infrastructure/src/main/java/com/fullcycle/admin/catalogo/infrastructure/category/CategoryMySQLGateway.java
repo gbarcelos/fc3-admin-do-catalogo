@@ -1,24 +1,23 @@
 package com.fullcycle.admin.catalogo.infrastructure.category;
 
+import static com.fullcycle.admin.catalogo.infrastructure.utils.SpecificationUtils.like;
+
 import com.fullcycle.admin.catalogo.domain.category.Category;
 import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
-import com.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
+import com.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import com.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import com.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import static com.fullcycle.admin.catalogo.infrastructure.utils.SpecificationUtils.like;
-
-@Service
+@Component
 public class CategoryMySQLGateway implements CategoryGateway {
 
   private final CategoryRepository repository;
