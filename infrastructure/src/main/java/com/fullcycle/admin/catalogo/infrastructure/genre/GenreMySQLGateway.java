@@ -5,35 +5,45 @@ import com.fullcycle.admin.catalogo.domain.genre.GenreGateway;
 import com.fullcycle.admin.catalogo.domain.genre.GenreID;
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import com.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
-import org.springframework.stereotype.Component;
-
+import com.fullcycle.admin.catalogo.infrastructure.genre.persistence.GenreJpaEntity;
+import com.fullcycle.admin.catalogo.infrastructure.genre.persistence.GenreRepository;
+import java.util.Objects;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 public class GenreMySQLGateway implements GenreGateway {
 
-    @Override
-    public Genre create(Genre aGenre) {
-        return null;
-    }
+  private final GenreRepository genreRepository;
 
-    @Override
-    public void deleteById(GenreID anId) {
+  public GenreMySQLGateway(final GenreRepository genreRepository) {
+    this.genreRepository = Objects.requireNonNull(genreRepository);
+  }
 
-    }
+  @Override
+  public Genre create(final Genre aGenre) {
+    return save(aGenre);
+  }
 
-    @Override
-    public Optional<Genre> findById(GenreID anId) {
-        return Optional.empty();
-    }
+  @Override
+  public void deleteById(GenreID anId) {}
 
-    @Override
-    public Genre update(Genre aGenre) {
-        return null;
-    }
+  @Override
+  public Optional<Genre> findById(GenreID anId) {
+    return Optional.empty();
+  }
 
-    @Override
-    public Pagination<Genre> findAll(SearchQuery aQuery) {
-        return null;
-    }
+  @Override
+  public Genre update(Genre aGenre) {
+    return null;
+  }
+
+  @Override
+  public Pagination<Genre> findAll(SearchQuery aQuery) {
+    return null;
+  }
+
+  private Genre save(final Genre aGenre) {
+    return this.genreRepository.save(GenreJpaEntity.from(aGenre)).toAggregate();
+  }
 }
