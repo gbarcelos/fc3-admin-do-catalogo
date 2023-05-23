@@ -415,7 +415,7 @@ public class GenreMySQLGatewayTest {
       final int expectedPerPage,
       final int expectedItemsCount,
       final long expectedTotal,
-      final String expectedGenreName) {
+      final String expectedGenreName) throws InterruptedException {
     // given
     mockGenres();
     final var expectedSort = "name";
@@ -450,7 +450,7 @@ public class GenreMySQLGatewayTest {
       final int expectedPerPage,
       final int expectedItemsCount,
       final long expectedTotal,
-      final String expectedGenreName) {
+      final String expectedGenreName) throws InterruptedException {
     // given
     mockGenres();
     final var expectedTerms = "";
@@ -481,7 +481,7 @@ public class GenreMySQLGatewayTest {
       final int expectedPerPage,
       final int expectedItemsCount,
       final long expectedTotal,
-      final String expectedGenres) {
+      final String expectedGenres) throws InterruptedException {
     // given
     mockGenres();
     final var expectedTerms = "";
@@ -501,7 +501,7 @@ public class GenreMySQLGatewayTest {
     Assertions.assertEquals(expectedTotal, actualPage.total());
     Assertions.assertEquals(expectedItemsCount, actualPage.items().size());
 
-    //FIXME: Melhorar esse loop
+    // FIXME: Melhorar esse loop
     int index = 0;
     for (final var expectedName : expectedGenres.split(";")) {
       final var actualName = actualPage.items().get(index).getName();
@@ -510,14 +510,24 @@ public class GenreMySQLGatewayTest {
     }
   }
 
-  private void mockGenres() {
+  private void mockGenres() throws InterruptedException {
+
+    final var comediaRomantica = GenreJpaEntity.from(Genre.newGenre("Comédia romântica", true));
+
+    Thread.sleep(1);
+    final var acao = GenreJpaEntity.from(Genre.newGenre("Ação", true));
+
+    Thread.sleep(1);
+    final var drama = GenreJpaEntity.from(Genre.newGenre("Drama", true));
+
+    Thread.sleep(1);
+    final var terror = GenreJpaEntity.from(Genre.newGenre("Terror", true));
+
+    Thread.sleep(1);
+    final var ficcaoCientifica = GenreJpaEntity.from(Genre.newGenre("Ficção científica", true));
+
     genreRepository.saveAllAndFlush(
-        List.of(
-            GenreJpaEntity.from(Genre.newGenre("Comédia romântica", true)),
-            GenreJpaEntity.from(Genre.newGenre("Ação", true)),
-            GenreJpaEntity.from(Genre.newGenre("Drama", true)),
-            GenreJpaEntity.from(Genre.newGenre("Terror", true)),
-            GenreJpaEntity.from(Genre.newGenre("Ficção científica", true))));
+        List.of(comediaRomantica, acao, drama, terror, ficcaoCientifica));
   }
 
   private List<CategoryID> sorted(final List<CategoryID> expectedCategories) {

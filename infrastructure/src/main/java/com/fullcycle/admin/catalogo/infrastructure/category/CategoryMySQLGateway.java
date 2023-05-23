@@ -63,12 +63,7 @@ public class CategoryMySQLGateway implements CategoryGateway {
     final var specifications =
         Optional.ofNullable(aQuery.terms())
             .filter(str -> !str.isBlank())
-            .map(
-                str -> {
-                  final Specification<CategoryJpaEntity> nameLike = like("name", str);
-                  final Specification<CategoryJpaEntity> descriptionLike = like("description", str);
-                  return nameLike.or(descriptionLike);
-                })
+            .map(this::assembleSpecification)
             .orElse(null);
 
     final var pageResult = this.repository.findAll(Specification.where(specifications), page);
@@ -82,11 +77,17 @@ public class CategoryMySQLGateway implements CategoryGateway {
 
   @Override
   public List<CategoryID> existsByIds(final Iterable<CategoryID> ids) {
-    //TODO: implementar quando chegar na camada de infra
+    // TODO: implementar quando chegar na camada de infra
     return Collections.emptyList();
   }
 
   private Category save(final Category aCategory) {
     return repository.save(CategoryJpaEntity.from(aCategory)).toAggregate();
+  }
+
+  private Specification<CategoryJpaEntity> assembleSpecification(final String str) {
+    final Specification<CategoryJpaEntity> nameLike = like("name", str);
+    final Specification<CategoryJpaEntity> descriptionLike = like("description", str);
+    return nameLike.or(descriptionLike);
   }
 }
