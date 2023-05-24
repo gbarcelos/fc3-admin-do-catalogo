@@ -29,12 +29,12 @@ public class CategoryID extends Identifier {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     final CategoryID that = (CategoryID) o;
-    return value.equals(that.value);
+    return getValue().equals(that.getValue());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(value);
+    return Objects.hash(getValue());
   }
 
   @Override
