@@ -14,6 +14,8 @@ import com.fullcycle.admin.catalogo.application.genre.create.CreateGenreOutput;
 import com.fullcycle.admin.catalogo.application.genre.create.CreateGenreUseCase;
 import com.fullcycle.admin.catalogo.application.genre.retrieve.get.GenreOutput;
 import com.fullcycle.admin.catalogo.application.genre.retrieve.get.GetGenreByIdUseCase;
+import com.fullcycle.admin.catalogo.application.genre.update.UpdateGenreOutput;
+import com.fullcycle.admin.catalogo.application.genre.update.UpdateGenreUseCase;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.exceptions.NotFoundException;
 import com.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
@@ -22,6 +24,7 @@ import com.fullcycle.admin.catalogo.domain.genre.GenreID;
 import com.fullcycle.admin.catalogo.domain.validation.Error;
 import com.fullcycle.admin.catalogo.domain.validation.handler.Notification;
 import com.fullcycle.admin.catalogo.infrastructure.genre.models.CreateGenreRequest;
+import com.fullcycle.admin.catalogo.infrastructure.genre.models.UpdateGenreRequest;
 import java.util.List;
 import java.util.Objects;
 import org.junit.jupiter.api.Test;
@@ -40,6 +43,8 @@ public class GenreAPITest {
   @MockBean private CreateGenreUseCase createGenreUseCase;
 
   @MockBean private GetGenreByIdUseCase getGenreByIdUseCase;
+
+  @MockBean private UpdateGenreUseCase updateGenreUseCase;
 
   @Test
   public void givenAValidCommand_whenCallsCreateGenre_shouldReturnGenreId() throws Exception {
@@ -179,5 +184,84 @@ public class GenreAPITest {
         .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)));
 
     verify(getGenreByIdUseCase).execute(eq(expectedId.getValue()));
+  }
+
+  @Test
+  public void givenAValidCommand_whenCallsUpdateGenre_shouldReturnGenreId() throws Exception {
+    // given
+    final var expectedName = "Ação";
+    final var expectedCategories = List.of("123", "456");
+    final var expectedIsActive = true;
+
+    final var aGenre = Genre.newGenre(expectedName, expectedIsActive);
+    final var expectedId = aGenre.getId().getValue();
+
+    final var aCommand = new UpdateGenreRequest(expectedName, expectedCategories, expectedIsActive);
+
+    when(updateGenreUseCase.execute(any())).thenReturn(UpdateGenreOutput.from(aGenre));
+
+    // when
+    final var aRequest =
+        put("/genres/{id}", expectedId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(this.mapper.writeValueAsString(aCommand));
+
+    final var response = this.mvc.perform(aRequest).andDo(print());
+
+    // then
+    response
+        .andExpect(status().isOk())
+        .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath("$.id", equalTo(expectedId)));
+
+    verify(updateGenreUseCase)
+        .execute(
+            argThat(
+                cmd ->
+                    Objects.equals(expectedName, cmd.name())
+                        && Objects.equals(expectedCategories, cmd.categories())
+                        && Objects.equals(expectedIsActive, cmd.isActive())));
+  }
+
+  @Test
+  public void givenAnInvalidName_whenCallsUpdateGenre_shouldReturnNotification() throws Exception {
+    // given
+    final String expectedName = null;
+    final var expectedCategories = List.of("123", "456");
+    final var expectedIsActive = true;
+    final var expectedErrorMessage = "'name' should not be null";
+
+    final var aGenre = Genre.newGenre("Ação", expectedIsActive);
+    final var expectedId = aGenre.getId().getValue();
+
+    final var aCommand = new UpdateGenreRequest(expectedName, expectedCategories, expectedIsActive);
+
+    when(updateGenreUseCase.execute(any()))
+        .thenThrow(
+            new NotificationException(
+                "Error", Notification.create(new Error(expectedErrorMessage))));
+
+    // when
+    final var aRequest =
+        put("/genres/{id}", expectedId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(this.mapper.writeValueAsString(aCommand));
+
+    final var response = this.mvc.perform(aRequest).andDo(print());
+
+    // then
+    response
+        .andExpect(status().isUnprocessableEntity())
+        .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath("$.errors", hasSize(1)))
+        .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)));
+
+    verify(updateGenreUseCase)
+        .execute(
+            argThat(
+                cmd ->
+                    Objects.equals(expectedName, cmd.name())
+                        && Objects.equals(expectedCategories, cmd.categories())
+                        && Objects.equals(expectedIsActive, cmd.isActive())));
   }
 }
