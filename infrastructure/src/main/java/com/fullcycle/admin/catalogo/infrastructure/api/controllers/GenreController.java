@@ -3,6 +3,8 @@ package com.fullcycle.admin.catalogo.infrastructure.api.controllers;
 import com.fullcycle.admin.catalogo.application.genre.create.CreateGenreCommand;
 import com.fullcycle.admin.catalogo.application.genre.create.CreateGenreUseCase;
 import com.fullcycle.admin.catalogo.application.genre.retrieve.get.GetGenreByIdUseCase;
+import com.fullcycle.admin.catalogo.application.genre.update.UpdateGenreCommand;
+import com.fullcycle.admin.catalogo.application.genre.update.UpdateGenreUseCase;
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import com.fullcycle.admin.catalogo.infrastructure.api.GenreAPI;
 import com.fullcycle.admin.catalogo.infrastructure.genre.models.CreateGenreRequest;
@@ -17,14 +19,17 @@ import java.net.URI;
 
 @RestController
 public class GenreController implements GenreAPI {
-
   private final CreateGenreUseCase createGenreUseCase;
   private final GetGenreByIdUseCase getGenreByIdUseCase;
+  private final UpdateGenreUseCase updateGenreUseCase;
 
   public GenreController(
-      final CreateGenreUseCase createGenreUseCase, final GetGenreByIdUseCase getGenreByIdUseCase) {
+      final CreateGenreUseCase createGenreUseCase,
+      final GetGenreByIdUseCase getGenreByIdUseCase,
+      final UpdateGenreUseCase updateGenreUseCase) {
     this.createGenreUseCase = createGenreUseCase;
     this.getGenreByIdUseCase = getGenreByIdUseCase;
+    this.updateGenreUseCase = updateGenreUseCase;
   }
 
   @Override
@@ -54,7 +59,12 @@ public class GenreController implements GenreAPI {
 
   @Override
   public ResponseEntity<?> updateById(final String id, final UpdateGenreRequest input) {
-    return null;
+    final var aCommand =
+        UpdateGenreCommand.with(id, input.name(), input.isActive(), input.categories());
+
+    final var output = this.updateGenreUseCase.execute(aCommand);
+
+    return ResponseEntity.ok(output);
   }
 
   @Override
