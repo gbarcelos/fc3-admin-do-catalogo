@@ -13,6 +13,8 @@ import com.fullcycle.admin.catalogo.infrastructure.configuration.json.Json;
 import com.fullcycle.admin.catalogo.infrastructure.genre.models.CreateGenreRequest;
 import java.util.List;
 import java.util.function.Function;
+
+import com.fullcycle.admin.catalogo.infrastructure.genre.models.GenreResponse;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -74,7 +76,8 @@ public interface MockDsl {
     return listGenres(page, perPage, "", "", "");
   }
 
-  default ResultActions listGenres(final int page, final int perPage, final String search) throws Exception {
+  default ResultActions listGenres(final int page, final int perPage, final String search)
+      throws Exception {
     return listGenres(page, perPage, search, "", "");
   }
 
@@ -86,6 +89,10 @@ public interface MockDsl {
       final String direction)
       throws Exception {
     return this.list("/genres", page, perPage, search, sort, direction);
+  }
+
+  default GenreResponse retrieveAGenre(final Identifier anId) throws Exception {
+    return this.retrieve("/genres/", anId, GenreResponse.class);
   }
 
   default <A, D> List<D> mapTo(final List<A> actual, final Function<A, D> mapper) {
