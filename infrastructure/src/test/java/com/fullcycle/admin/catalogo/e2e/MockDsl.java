@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import com.fullcycle.admin.catalogo.infrastructure.genre.models.GenreResponse;
+import com.fullcycle.admin.catalogo.infrastructure.genre.models.UpdateGenreRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -93,6 +94,11 @@ public interface MockDsl {
 
   default GenreResponse retrieveAGenre(final Identifier anId) throws Exception {
     return this.retrieve("/genres/", anId, GenreResponse.class);
+  }
+
+  default ResultActions updateAGenre(final Identifier anId, final UpdateGenreRequest aRequest)
+      throws Exception {
+    return this.update("/genres/", anId, aRequest);
   }
 
   default <A, D> List<D> mapTo(final List<A> actual, final Function<A, D> mapper) {
