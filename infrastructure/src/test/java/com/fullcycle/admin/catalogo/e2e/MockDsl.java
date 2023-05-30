@@ -70,6 +70,14 @@ public interface MockDsl {
     return GenreID.from(actualId);
   }
 
+  default ResultActions listGenres(final int page, final int perPage) throws Exception {
+    return listGenres(page, perPage, "", "", "");
+  }
+
+  default ResultActions listGenres(final int page, final int perPage, final String search) throws Exception {
+    return listGenres(page, perPage, search, "", "");
+  }
+
   default ResultActions listGenres(
       final int page,
       final int perPage,
