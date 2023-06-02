@@ -5,6 +5,8 @@ import static com.fullcycle.admin.catalogo.Fixture.name;
 
 import com.fullcycle.admin.catalogo.MySQLGatewayTest;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMember;
+import com.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
+import com.fullcycle.admin.catalogo.infrastructure.castmember.persistence.CastMemberJpaEntity;
 import com.fullcycle.admin.catalogo.infrastructure.castmember.persistence.CastMemberRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -53,5 +55,43 @@ public class CastMemberMySQLGatewayTest {
     Assertions.assertEquals(expectedType, persistedMember.getType());
     Assertions.assertEquals(aMember.getCreatedAt(), persistedMember.getCreatedAt());
     Assertions.assertEquals(aMember.getUpdatedAt(), persistedMember.getUpdatedAt());
+  }
+
+  @Test
+  public void givenAValidCastMember_whenCallsUpdate_shouldRefreshIt() throws InterruptedException {
+    // given
+    final var expectedName = name();
+    final var expectedType = CastMemberType.ACTOR;
+
+    final var aMember = CastMember.newMember("vind", CastMemberType.DIRECTOR);
+    final var expectedId = aMember.getId();
+
+    final var currentMember = castMemberRepository.saveAndFlush(CastMemberJpaEntity.from(aMember));
+
+    Assertions.assertEquals(1, castMemberRepository.count());
+    Assertions.assertEquals("vind", currentMember.getName());
+    Assertions.assertEquals(CastMemberType.DIRECTOR, currentMember.getType());
+
+    Thread.sleep(1);
+    // when
+    final var actualMember =
+        castMemberGateway.update(CastMember.with(aMember).update(expectedName, expectedType));
+
+    // then
+    Assertions.assertEquals(1, castMemberRepository.count());
+
+    Assertions.assertEquals(expectedId, actualMember.getId());
+    Assertions.assertEquals(expectedName, actualMember.getName());
+    Assertions.assertEquals(expectedType, actualMember.getType());
+    Assertions.assertEquals(aMember.getCreatedAt(), actualMember.getCreatedAt());
+    Assertions.assertTrue(aMember.getUpdatedAt().isBefore(actualMember.getUpdatedAt()));
+
+    final var persistedMember = castMemberRepository.findById(expectedId.getValue()).get();
+
+    Assertions.assertEquals(expectedId.getValue(), persistedMember.getId());
+    Assertions.assertEquals(expectedName, persistedMember.getName());
+    Assertions.assertEquals(expectedType, persistedMember.getType());
+    Assertions.assertEquals(aMember.getCreatedAt(), persistedMember.getCreatedAt());
+    Assertions.assertTrue(aMember.getUpdatedAt().isBefore(persistedMember.getUpdatedAt()));
   }
 }
