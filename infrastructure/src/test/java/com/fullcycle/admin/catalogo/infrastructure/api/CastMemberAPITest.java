@@ -12,15 +12,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullcycle.admin.catalogo.ControllerTest;
 import com.fullcycle.admin.catalogo.Fixture;
 import com.fullcycle.admin.catalogo.application.castmember.create.CreateCastMemberOutput;
-import com.fullcycle.admin.catalogo.application.castmember.create.CreateCastMemberUseCase;
-import com.fullcycle.admin.catalogo.application.castmember.delete.DeleteCastMemberUseCase;
-import com.fullcycle.admin.catalogo.application.castmember.retrieve.get.GetCastMemberByIdUseCase;
-import com.fullcycle.admin.catalogo.application.castmember.retrieve.list.ListCastMembersUseCase;
-import com.fullcycle.admin.catalogo.application.castmember.update.UpdateCastMemberUseCase;
+import com.fullcycle.admin.catalogo.application.castmember.create.DefaultCreateCastMemberUseCase;
+import com.fullcycle.admin.catalogo.application.castmember.delete.DefaultDeleteCastMemberUseCase;
+import com.fullcycle.admin.catalogo.application.castmember.retrieve.get.DefaultGetCastMemberByIdUseCase;
+import com.fullcycle.admin.catalogo.application.castmember.retrieve.list.DefaultListCastMembersUseCase;
+import com.fullcycle.admin.catalogo.application.castmember.update.DefaultUpdateCastMemberUseCase;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
-import java.util.Objects;
-
 import com.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
+import com.fullcycle.admin.catalogo.domain.validation.Error;
+import com.fullcycle.admin.catalogo.infrastructure.castmember.models.CreateCastMemberRequest;
+import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -34,15 +35,15 @@ public class CastMemberAPITest {
 
   @Autowired private ObjectMapper mapper;
 
-  @MockBean private CreateCastMemberUseCase createCastMemberUseCase;
+  @MockBean private DefaultCreateCastMemberUseCase createCastMemberUseCase;
 
-  @MockBean private DeleteCastMemberUseCase deleteCastMemberUseCase;
+  @MockBean private DefaultDeleteCastMemberUseCase deleteCastMemberUseCase;
 
-  @MockBean private GetCastMemberByIdUseCase getCastMemberByIdUseCase;
+  @MockBean private DefaultGetCastMemberByIdUseCase getCastMemberByIdUseCase;
 
-  @MockBean private ListCastMembersUseCase listCastMembersUseCase;
+  @MockBean private DefaultListCastMembersUseCase listCastMembersUseCase;
 
-  @MockBean private UpdateCastMemberUseCase updateCastMemberUseCase;
+  @MockBean private DefaultUpdateCastMemberUseCase updateCastMemberUseCase;
 
   @Test
   public void givenAValidCommand_whenCallsCreateCastMember_shouldReturnItsIdentifier()
