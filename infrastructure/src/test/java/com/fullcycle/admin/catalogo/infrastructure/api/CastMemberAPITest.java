@@ -298,4 +298,22 @@ public class CastMemberAPITest {
                         && Objects.equals(expectedName, actualCmd.name())
                         && Objects.equals(expectedType, actualCmd.type())));
   }
+
+  @Test
+  public void givenAValidId_whenCallsDeleteById_shouldDeleteIt() throws Exception {
+    // given
+    final var expectedId = "123";
+
+    doNothing().when(deleteCastMemberUseCase).execute(any());
+
+    // when
+    final var aRequest = delete("/cast_members/{id}", expectedId);
+
+    final var response = this.mvc.perform(aRequest);
+
+    // then
+    response.andExpect(status().isNoContent());
+
+    verify(deleteCastMemberUseCase).execute(eq(expectedId));
+  }
 }
