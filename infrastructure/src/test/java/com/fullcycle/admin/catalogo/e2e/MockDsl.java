@@ -4,8 +4,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fullcycle.admin.catalogo.domain.Identifier;
+import com.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
+import com.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.genre.GenreID;
+import com.fullcycle.admin.catalogo.infrastructure.castmember.models.CreateCastMemberRequest;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.CategoryResponse;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryRequest;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryRequest;
@@ -24,6 +27,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 public interface MockDsl {
 
   MockMvc mvc();
+
+  default CastMemberID givenACastMember(final String aName, final CastMemberType aType)
+      throws Exception {
+    final var aRequestBody = new CreateCastMemberRequest(aName, aType);
+    final var actualId = this.given("/cast_members", aRequestBody);
+    return CastMemberID.from(actualId);
+  }
 
   default ResultActions deleteACategory(final Identifier anId) throws Exception {
     return this.delete("/categories/", anId);
