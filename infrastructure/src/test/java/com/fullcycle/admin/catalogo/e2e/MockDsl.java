@@ -35,6 +35,11 @@ public interface MockDsl {
     return CastMemberID.from(actualId);
   }
 
+  default ResultActions givenACastMemberResult(final String aName, final CastMemberType aType) throws Exception {
+    final var aRequestBody = new CreateCastMemberRequest(aName, aType);
+    return this.givenResult("/cast_members", aRequestBody);
+  }
+
   default ResultActions deleteACategory(final Identifier anId) throws Exception {
     return this.delete("/categories/", anId);
   }
@@ -133,6 +138,14 @@ public interface MockDsl {
             .replace("%s/".formatted(url), "");
 
     return actualId;
+  }
+
+  private ResultActions givenResult(final String url, final Object body) throws Exception {
+    final var aRequest = post(url)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(Json.writeValueAsString(body));
+
+    return this.mvc().perform(aRequest);
   }
 
   private ResultActions list(
