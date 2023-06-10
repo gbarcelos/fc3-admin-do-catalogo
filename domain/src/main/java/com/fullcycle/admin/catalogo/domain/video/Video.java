@@ -81,6 +81,31 @@ public class Video extends AggregateRoot<VideoID> {
   @Override
   public void validate(final ValidationHandler handler) {}
 
+  public Video update(
+      final String aTitle,
+      final String aDescription,
+      final Year aLaunchYear,
+      final double aDuration,
+      final boolean wasOpened,
+      final boolean wasPublished,
+      final Rating aRating,
+      final Set<CategoryID> categories,
+      final Set<GenreID> genres,
+      final Set<CastMemberID> members) {
+    this.title = aTitle;
+    this.description = aDescription;
+    this.launchedAt = aLaunchYear;
+    this.duration = aDuration;
+    this.opened = wasOpened;
+    this.published = wasPublished;
+    this.rating = aRating;
+    this.setCategories(categories);
+    this.setGenres(genres);
+    this.setCastMembers(members);
+    this.updatedAt = InstantUtils.now();
+    return this;
+  }
+
   public Video setBanner(final ImageMedia banner) {
     this.banner = banner;
     this.updatedAt = InstantUtils.now();
