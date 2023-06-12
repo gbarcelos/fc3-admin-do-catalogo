@@ -8,6 +8,8 @@ import com.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import com.fullcycle.admin.catalogo.infrastructure.castmember.persistence.CastMemberJpaEntity;
 import com.fullcycle.admin.catalogo.infrastructure.castmember.persistence.CastMemberRepository;
 import com.fullcycle.admin.catalogo.infrastructure.utils.SpecificationUtils;
+
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
@@ -70,6 +72,11 @@ public class CastMemberMySQLGateway implements CastMemberGateway {
         pageResult.getSize(),
         pageResult.getTotalElements(),
         pageResult.map(CastMemberJpaEntity::toAggregate).toList());
+  }
+
+  @Override
+  public List<CastMemberID> existsByIds(Iterable<CastMemberID> ids) {
+    throw new UnsupportedOperationException();
   }
 
   private CastMember save(final CastMember aCastMember) {

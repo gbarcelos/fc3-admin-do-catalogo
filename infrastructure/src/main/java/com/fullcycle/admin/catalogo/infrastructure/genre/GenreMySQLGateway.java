@@ -10,6 +10,8 @@ import com.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import com.fullcycle.admin.catalogo.infrastructure.genre.persistence.GenreJpaEntity;
 import com.fullcycle.admin.catalogo.infrastructure.genre.persistence.GenreRepository;
 import com.fullcycle.admin.catalogo.infrastructure.utils.SpecificationUtils;
+
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
@@ -70,6 +72,11 @@ public class GenreMySQLGateway implements GenreGateway {
         pageResult.getSize(),
         pageResult.getTotalElements(),
         pageResult.map(GenreJpaEntity::toAggregate).toList());
+  }
+
+  @Override
+  public List<GenreID> existsByIds(Iterable<GenreID> ids) {
+    throw new UnsupportedOperationException();
   }
 
   private Genre save(final Genre aGenre) {
