@@ -243,8 +243,4 @@ public class UpdateGenreUseCaseTest extends UseCaseTest {
     Mockito.verify(categoryGateway, times(1)).existsByIds(eq(expectedCategories));
     Mockito.verify(genreGateway, never()).update(any());
   }
-
-  private List<String> asString(final List<CategoryID> ids) {
-    return ids.stream().map(CategoryID::getValue).toList();
-  }
 }
