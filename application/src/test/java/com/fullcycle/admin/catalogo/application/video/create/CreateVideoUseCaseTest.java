@@ -30,9 +30,12 @@ public class CreateVideoUseCaseTest extends UseCaseTest {
 
   @Mock private GenreGateway genreGateway;
 
+  @Mock private MediaResourceGateway mediaResourceGateway;
+
   @Override
   protected List<Object> getMocks() {
-    return null;
+    return List.of(
+        videoGateway, categoryGateway, genreGateway, castMemberGateway, mediaResourceGateway);
   }
 
   @Test
@@ -79,6 +82,9 @@ public class CreateVideoUseCaseTest extends UseCaseTest {
 
     when(genreGateway.existsByIds(any())).thenReturn(new ArrayList<>(expectedGenres));
 
+    mockImageMedia();
+    mockAudioVideoMedia();
+
     when(videoGateway.create(any())).thenAnswer(returnsFirstArg());
 
     // when
@@ -101,6 +107,35 @@ public class CreateVideoUseCaseTest extends UseCaseTest {
                         && Objects.equals(expectedRating, actualVideo.getRating())
                         && Objects.equals(expectedCategories, actualVideo.getCategories())
                         && Objects.equals(expectedGenres, actualVideo.getGenres())
-                        && Objects.equals(expectedMembers, actualVideo.getCastMembers())));
+                        && Objects.equals(expectedMembers, actualVideo.getCastMembers())
+                        && Objects.equals(expectedVideo.name(), actualVideo.getVideo().get().name())
+                        && Objects.equals(
+                            expectedTrailer.name(), actualVideo.getTrailer().get().name())
+                        && Objects.equals(
+                            expectedBanner.name(), actualVideo.getBanner().get().name())
+                        && Objects.equals(
+                            expectedThumb.name(), actualVideo.getThumbnail().get().name())
+                        && Objects.equals(
+                            expectedThumbHalf.name(),
+                            actualVideo.getThumbnailHalf().get().name())));
+  }
+
+  private void mockImageMedia() {
+    when(mediaResourceGateway.storeImage(any(), any()))
+        .thenAnswer(
+            t -> {
+              final var resource = t.getArgument(1, Resource.class);
+              return ImageMedia.with(UUID.randomUUID().toString(), resource.name(), "/img");
+            });
+  }
+
+  private void mockAudioVideoMedia() {
+    when(mediaResourceGateway.storeAudioVideo(any(), any()))
+        .thenAnswer(
+            t -> {
+              final var resource = t.getArgument(1, Resource.class);
+              return AudioVideoMedia.with(
+                  UUID.randomUUID().toString(), resource.name(), "/img", "", MediaStatus.PENDING);
+            });
   }
 }
