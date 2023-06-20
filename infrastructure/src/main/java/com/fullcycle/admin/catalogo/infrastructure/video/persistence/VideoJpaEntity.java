@@ -1,11 +1,15 @@
 package com.fullcycle.admin.catalogo.infrastructure.video.persistence;
 
+import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.video.Rating;
 import com.fullcycle.admin.catalogo.domain.video.Video;
 import com.fullcycle.admin.catalogo.domain.video.VideoID;
 import java.time.Instant;
 import java.time.Year;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.*;
 
 @Table(name = "videos")
@@ -63,6 +67,9 @@ public class VideoJpaEntity {
   @JoinColumn(name = "thumbnail_half_id")
   private ImageMediaJpaEntity thumbnailHalf;
 
+  @OneToMany(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<VideoCategoryJpaEntity> categories;
+
   public VideoJpaEntity() {}
 
   private VideoJpaEntity(
@@ -96,25 +103,31 @@ public class VideoJpaEntity {
     this.banner = banner;
     this.thumbnail = thumbnail;
     this.thumbnailHalf = thumbnailHalf;
+    this.categories = new HashSet<>(3);
   }
 
   public static VideoJpaEntity from(final Video aVideo) {
-    return new VideoJpaEntity(
-        aVideo.getId().getValue(),
-        aVideo.getTitle(),
-        aVideo.getDescription(),
-        aVideo.getLaunchedAt().getValue(),
-        aVideo.getOpened(),
-        aVideo.getPublished(),
-        aVideo.getRating(),
-        aVideo.getDuration(),
-        aVideo.getCreatedAt(),
-        aVideo.getUpdatedAt(),
-        aVideo.getVideo().map(AudioVideoMediaJpaEntity::from).orElse(null),
-        aVideo.getTrailer().map(AudioVideoMediaJpaEntity::from).orElse(null),
-        aVideo.getBanner().map(ImageMediaJpaEntity::from).orElse(null),
-        aVideo.getThumbnail().map(ImageMediaJpaEntity::from).orElse(null),
-        aVideo.getThumbnailHalf().map(ImageMediaJpaEntity::from).orElse(null));
+    final var entity =
+        new VideoJpaEntity(
+            aVideo.getId().getValue(),
+            aVideo.getTitle(),
+            aVideo.getDescription(),
+            aVideo.getLaunchedAt().getValue(),
+            aVideo.getOpened(),
+            aVideo.getPublished(),
+            aVideo.getRating(),
+            aVideo.getDuration(),
+            aVideo.getCreatedAt(),
+            aVideo.getUpdatedAt(),
+            aVideo.getVideo().map(AudioVideoMediaJpaEntity::from).orElse(null),
+            aVideo.getTrailer().map(AudioVideoMediaJpaEntity::from).orElse(null),
+            aVideo.getBanner().map(ImageMediaJpaEntity::from).orElse(null),
+            aVideo.getThumbnail().map(ImageMediaJpaEntity::from).orElse(null),
+            aVideo.getThumbnailHalf().map(ImageMediaJpaEntity::from).orElse(null));
+
+    aVideo.getCategories().forEach(entity::addCategory);
+
+    return entity;
   }
 
   public Video toAggregate() {
@@ -134,9 +147,15 @@ public class VideoJpaEntity {
         Optional.ofNullable(getThumbnailHalf()).map(ImageMediaJpaEntity::toDomain).orElse(null),
         Optional.ofNullable(getTrailer()).map(AudioVideoMediaJpaEntity::toDomain).orElse(null),
         Optional.ofNullable(getVideo()).map(AudioVideoMediaJpaEntity::toDomain).orElse(null),
-        null,
+        getCategories().stream()
+            .map(it -> CategoryID.from(it.getId().getCategoryId()))
+            .collect(Collectors.toSet()),
         null,
         null);
+  }
+
+  public void addCategory(final CategoryID anId) {
+    this.categories.add(VideoCategoryJpaEntity.from(this, anId));
   }
 
   public String getId() {
@@ -272,5 +291,13 @@ public class VideoJpaEntity {
   public VideoJpaEntity setThumbnailHalf(ImageMediaJpaEntity thumbnailHalf) {
     this.thumbnailHalf = thumbnailHalf;
     return this;
+  }
+
+  public Set<VideoCategoryJpaEntity> getCategories() {
+    return categories;
+  }
+
+  public void setCategories(Set<VideoCategoryJpaEntity> categories) {
+    this.categories = categories;
   }
 }
