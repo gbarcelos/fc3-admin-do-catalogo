@@ -1,27 +1,23 @@
 package com.fullcycle.admin.catalogo.domain.category;
 
+import static com.fullcycle.admin.catalogo.domain.utils.IdUtils.uuid;
+
 import com.fullcycle.admin.catalogo.domain.Identifier;
 import java.util.Objects;
-import java.util.UUID;
 
 public class CategoryID extends Identifier {
   private final String value;
 
   private CategoryID(final String value) {
-    Objects.requireNonNull(value, "'value' should not be null");
-    this.value = value;
+    this.value = Objects.requireNonNull(value, "'value' should not be null");
   }
 
   public static CategoryID unique() {
-    return CategoryID.from(UUID.randomUUID());
+    return CategoryID.from(uuid());
   }
 
   public static CategoryID from(final String anId) {
     return new CategoryID(anId);
-  }
-
-  public static CategoryID from(final UUID anId) {
-    return new CategoryID(anId.toString().toLowerCase());
   }
 
   @Override

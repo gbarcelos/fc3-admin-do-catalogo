@@ -1,5 +1,6 @@
 package com.fullcycle.admin.catalogo.application.video.update;
 
+import static com.fullcycle.admin.catalogo.domain.utils.IdUtils.uuid;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -1111,7 +1112,7 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
         .thenAnswer(
             t -> {
               final var resource = t.getArgument(1, Resource.class);
-              return ImageMedia.with(UUID.randomUUID().toString(), resource.name(), "/img");
+              return ImageMedia.with(uuid(), resource.name(), "/img");
             });
   }
 
@@ -1121,7 +1122,7 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
             t -> {
               final var resource = t.getArgument(1, Resource.class);
               return AudioVideoMedia.with(
-                  UUID.randomUUID().toString(), resource.name(), "/img", "", MediaStatus.PENDING);
+                      uuid(), resource.name(), "/img", "", MediaStatus.PENDING);
             });
   }
 }

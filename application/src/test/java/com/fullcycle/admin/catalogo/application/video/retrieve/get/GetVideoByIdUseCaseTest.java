@@ -1,5 +1,6 @@
 package com.fullcycle.admin.catalogo.application.video.retrieve.get;
 
+import static com.fullcycle.admin.catalogo.domain.utils.IdUtils.uuid;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -11,7 +12,6 @@ import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -113,13 +113,13 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
   }
 
   private AudioVideoMedia audioVideo(final Resource.Type type) {
-    final var checksum = UUID.randomUUID().toString();
+    final var checksum = uuid();
     return AudioVideoMedia.with(
         checksum, type.name().toLowerCase(), "/videos/" + checksum, "", MediaStatus.PENDING);
   }
 
   private ImageMedia image(final Resource.Type type) {
-    final var checksum = UUID.randomUUID().toString();
+    final var checksum = uuid();
     return ImageMedia.with(checksum, type.name().toLowerCase(), "/images/" + checksum);
   }
 }
