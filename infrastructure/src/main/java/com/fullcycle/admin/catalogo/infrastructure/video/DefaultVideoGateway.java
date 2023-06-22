@@ -35,7 +35,8 @@ public class DefaultVideoGateway implements VideoGateway {
   @Override
   @Transactional(readOnly = true)
   public Optional<Video> findById(final VideoID anId) {
-    return Optional.empty();
+    return this.videoRepository.findById(anId.getValue())
+            .map(VideoJpaEntity::toAggregate);
   }
 
   @Override
