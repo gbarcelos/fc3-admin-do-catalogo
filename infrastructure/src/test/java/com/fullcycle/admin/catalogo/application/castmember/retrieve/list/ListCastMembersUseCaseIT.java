@@ -4,8 +4,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
-import com.fullcycle.admin.catalogo.Fixture;
 import com.fullcycle.admin.catalogo.IntegrationTest;
+import com.fullcycle.admin.catalogo.domain.Fixture;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMember;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberGateway;
 import com.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
@@ -30,10 +30,10 @@ public class ListCastMembersUseCaseIT {
   public void givenAValidQuery_whenCallsListCastMembers_shouldReturnAll()
       throws InterruptedException {
     // given
-    final var castMemberOne = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+    final var castMemberOne = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
     Thread.sleep(1);
-    final var castMemberTwo = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+    final var castMemberTwo = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
     final var members = List.of(castMemberOne, castMemberTwo);
 

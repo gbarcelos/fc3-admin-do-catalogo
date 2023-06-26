@@ -1,8 +1,5 @@
 package com.fullcycle.admin.catalogo.infrastructure.castmember;
 
-import static com.fullcycle.admin.catalogo.Fixture.CastMember.type;
-import static com.fullcycle.admin.catalogo.Fixture.name;
-
 import com.fullcycle.admin.catalogo.MySQLGatewayTest;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMember;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
@@ -10,13 +7,15 @@ import com.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
 import com.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import com.fullcycle.admin.catalogo.infrastructure.castmember.persistence.CastMemberJpaEntity;
 import com.fullcycle.admin.catalogo.infrastructure.castmember.persistence.CastMemberRepository;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
+import static com.fullcycle.admin.catalogo.domain.Fixture.CastMembers.type;
+import static com.fullcycle.admin.catalogo.domain.Fixture.name;
 
 @MySQLGatewayTest
 public class CastMemberMySQLGatewayTest {

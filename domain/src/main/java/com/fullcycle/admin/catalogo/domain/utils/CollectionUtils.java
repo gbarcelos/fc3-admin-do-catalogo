@@ -11,4 +11,11 @@ public final class CollectionUtils {
   public static <IN, OUT> Set<OUT> mapTo(final Set<IN> list, final Function<IN, OUT> mapper) {
     return list.stream().map(mapper).collect(Collectors.toSet());
   }
+
+  public static <T> Set<T> nullIfEmpty(final Set<T> values) {
+    if (values == null || values.isEmpty()) {
+      return null;
+    }
+    return values;
+  }
 }

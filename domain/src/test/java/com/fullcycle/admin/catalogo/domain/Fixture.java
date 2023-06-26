@@ -1,4 +1,9 @@
-package com.fullcycle.admin.catalogo.application;
+package com.fullcycle.admin.catalogo.domain;
+
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
+import static io.vavr.API.List;
+import static io.vavr.API.Match;
 
 import com.fullcycle.admin.catalogo.domain.castmember.CastMember;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
@@ -8,11 +13,8 @@ import com.fullcycle.admin.catalogo.domain.video.Rating;
 import com.fullcycle.admin.catalogo.domain.video.Resource;
 import com.fullcycle.admin.catalogo.domain.video.Video;
 import com.github.javafaker.Faker;
-
 import java.time.Year;
 import java.util.Set;
-
-import static io.vavr.API.*;
 
 public final class Fixture {
 

@@ -1,6 +1,7 @@
 package com.fullcycle.admin.catalogo.application.video.delete;
 
 import com.fullcycle.admin.catalogo.application.UseCaseTest;
+import com.fullcycle.admin.catalogo.domain.Fixture;
 import com.fullcycle.admin.catalogo.domain.exceptions.InternalErrorException;
 import com.fullcycle.admin.catalogo.domain.video.VideoGateway;
 import com.fullcycle.admin.catalogo.domain.video.VideoID;
