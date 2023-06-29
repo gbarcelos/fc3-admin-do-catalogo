@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "Genre")
 @Table(name = "genres")
 public class GenreJpaEntity {
 

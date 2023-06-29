@@ -304,6 +304,27 @@ public class GenreMySQLGatewayTest {
   }
 
   @Test
+  public void givenTwoGenresAndOnePersistede_whenCallsExistsByIds_shouldPersistedId() {
+    // given
+    final var aGenre = Genre.newGenre("Genre 1", true);
+
+    final var expectedItems = 1;
+    final var expectedId = aGenre.getId();
+
+    Assertions.assertEquals(0, genreRepository.count());
+
+    genreRepository.saveAndFlush(GenreJpaEntity.from(aGenre));
+
+    // when
+    final var actualGenre =
+        genreGateway.existsByIds(List.of(GenreID.from("123"), GenreID.from(expectedId.getValue())));
+
+    // then
+    Assertions.assertEquals(expectedItems, actualGenre.size());
+    Assertions.assertEquals(expectedId.getValue(), actualGenre.get(0).getValue());
+  }
+
+  @Test
   public void givenAPrePersistedGenre_whenCallsDeleteById_shouldDeleteGenre() {
     // given
     final var aGenre = Genre.newGenre("Ação", true);
@@ -415,7 +436,8 @@ public class GenreMySQLGatewayTest {
       final int expectedPerPage,
       final int expectedItemsCount,
       final long expectedTotal,
-      final String expectedGenreName) throws InterruptedException {
+      final String expectedGenreName)
+      throws InterruptedException {
     // given
     mockGenres();
     final var expectedSort = "name";
@@ -450,7 +472,8 @@ public class GenreMySQLGatewayTest {
       final int expectedPerPage,
       final int expectedItemsCount,
       final long expectedTotal,
-      final String expectedGenreName) throws InterruptedException {
+      final String expectedGenreName)
+      throws InterruptedException {
     // given
     mockGenres();
     final var expectedTerms = "";
@@ -481,7 +504,8 @@ public class GenreMySQLGatewayTest {
       final int expectedPerPage,
       final int expectedItemsCount,
       final long expectedTotal,
-      final String expectedGenres) throws InterruptedException {
+      final String expectedGenres)
+      throws InterruptedException {
     // given
     mockGenres();
     final var expectedTerms = "";
