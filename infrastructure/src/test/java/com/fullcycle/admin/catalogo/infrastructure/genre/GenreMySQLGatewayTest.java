@@ -304,7 +304,7 @@ public class GenreMySQLGatewayTest {
   }
 
   @Test
-  public void givenTwoGenresAndOnePersistede_whenCallsExistsByIds_shouldPersistedId() {
+  public void givenTwoGenresAndOnePersisted_whenCallsExistsByIds_shouldPersistedId() {
     // given
     final var aGenre = Genre.newGenre("Genre 1", true);
 
