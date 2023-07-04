@@ -1,6 +1,6 @@
 package com.fullcycle.admin.catalogo.infrastructure.services.impl;
 
-import com.fullcycle.admin.catalogo.domain.video.Resource;
+import com.fullcycle.admin.catalogo.domain.resource.Resource;
 import com.fullcycle.admin.catalogo.infrastructure.services.StorageService;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;

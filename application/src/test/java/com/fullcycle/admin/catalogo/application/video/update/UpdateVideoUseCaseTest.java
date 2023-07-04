@@ -1,6 +1,8 @@
 package com.fullcycle.admin.catalogo.application.video.update;
 
+import static com.fullcycle.admin.catalogo.domain.Fixture.Videos.resource;
 import static com.fullcycle.admin.catalogo.domain.utils.IdUtils.uuid;
+import static com.fullcycle.admin.catalogo.domain.video.VideoMediaType.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -16,6 +18,7 @@ import com.fullcycle.admin.catalogo.domain.exceptions.InternalErrorException;
 import com.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
 import com.fullcycle.admin.catalogo.domain.genre.GenreGateway;
 import com.fullcycle.admin.catalogo.domain.genre.GenreID;
+import com.fullcycle.admin.catalogo.domain.resource.Resource;
 import com.fullcycle.admin.catalogo.domain.video.*;
 import java.time.Year;
 import java.util.*;
@@ -60,11 +63,11 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
     final var expectedGenres = Set.of(Fixture.Genres.tech().getId());
     final var expectedMembers =
         Set.of(Fixture.CastMembers.wesley().getId(), Fixture.CastMembers.gabriel().getId());
-    final Resource expectedVideo = Fixture.Videos.resource(Resource.Type.VIDEO);
-    final Resource expectedTrailer = Fixture.Videos.resource(Resource.Type.TRAILER);
-    final Resource expectedBanner = Fixture.Videos.resource(Resource.Type.BANNER);
-    final Resource expectedThumb = Fixture.Videos.resource(Resource.Type.THUMBNAIL);
-    final Resource expectedThumbHalf = Fixture.Videos.resource(Resource.Type.THUMBNAIL_HALF);
+    final Resource expectedVideo = resource(VIDEO);
+    final Resource expectedTrailer = resource(TRAILER);
+    final Resource expectedBanner = resource(BANNER);
+    final Resource expectedThumb = resource(THUMBNAIL);
+    final Resource expectedThumbHalf = resource(THUMBNAIL_HALF);
 
     final var aCommand =
         UpdateVideoCommand.with(
@@ -150,11 +153,11 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
     final var expectedGenres = Set.of(Fixture.Genres.tech().getId());
     final var expectedMembers =
         Set.of(Fixture.CastMembers.wesley().getId(), Fixture.CastMembers.gabriel().getId());
-    final Resource expectedVideo = Fixture.Videos.resource(Resource.Type.VIDEO);
-    final Resource expectedTrailer = Fixture.Videos.resource(Resource.Type.TRAILER);
-    final Resource expectedBanner = Fixture.Videos.resource(Resource.Type.BANNER);
-    final Resource expectedThumb = Fixture.Videos.resource(Resource.Type.THUMBNAIL);
-    final Resource expectedThumbHalf = Fixture.Videos.resource(Resource.Type.THUMBNAIL_HALF);
+    final Resource expectedVideo = resource(VIDEO);
+    final Resource expectedTrailer = resource(TRAILER);
+    final Resource expectedBanner = resource(BANNER);
+    final Resource expectedThumb = resource(THUMBNAIL);
+    final Resource expectedThumbHalf = resource(THUMBNAIL_HALF);
 
     final var aCommand =
         UpdateVideoCommand.with(
@@ -238,11 +241,11 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
     final var expectedGenres = Set.<GenreID>of();
     final var expectedMembers =
         Set.of(Fixture.CastMembers.wesley().getId(), Fixture.CastMembers.gabriel().getId());
-    final Resource expectedVideo = Fixture.Videos.resource(Resource.Type.VIDEO);
-    final Resource expectedTrailer = Fixture.Videos.resource(Resource.Type.TRAILER);
-    final Resource expectedBanner = Fixture.Videos.resource(Resource.Type.BANNER);
-    final Resource expectedThumb = Fixture.Videos.resource(Resource.Type.THUMBNAIL);
-    final Resource expectedThumbHalf = Fixture.Videos.resource(Resource.Type.THUMBNAIL_HALF);
+    final Resource expectedVideo = resource(VIDEO);
+    final Resource expectedTrailer = resource(TRAILER);
+    final Resource expectedBanner = resource(BANNER);
+    final Resource expectedThumb = resource(THUMBNAIL);
+    final Resource expectedThumbHalf = resource(THUMBNAIL_HALF);
 
     final var aCommand =
         UpdateVideoCommand.with(
@@ -325,11 +328,11 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
     final var expectedCategories = Set.of(Fixture.Categories.aulas().getId());
     final var expectedGenres = Set.of(Fixture.Genres.tech().getId());
     final var expectedMembers = Set.<CastMemberID>of();
-    final Resource expectedVideo = Fixture.Videos.resource(Resource.Type.VIDEO);
-    final Resource expectedTrailer = Fixture.Videos.resource(Resource.Type.TRAILER);
-    final Resource expectedBanner = Fixture.Videos.resource(Resource.Type.BANNER);
-    final Resource expectedThumb = Fixture.Videos.resource(Resource.Type.THUMBNAIL);
-    final Resource expectedThumbHalf = Fixture.Videos.resource(Resource.Type.THUMBNAIL_HALF);
+    final Resource expectedVideo = resource(VIDEO);
+    final Resource expectedTrailer = resource(TRAILER);
+    final Resource expectedBanner = resource(BANNER);
+    final Resource expectedThumb = resource(THUMBNAIL);
+    final Resource expectedThumbHalf = resource(THUMBNAIL_HALF);
 
     final var aCommand =
         UpdateVideoCommand.with(
@@ -1054,11 +1057,11 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
     final var expectedGenres = Set.of(Fixture.Genres.tech().getId());
     final var expectedMembers =
         Set.of(Fixture.CastMembers.wesley().getId(), Fixture.CastMembers.gabriel().getId());
-    final Resource expectedVideo = Fixture.Videos.resource(Resource.Type.VIDEO);
-    final Resource expectedTrailer = Fixture.Videos.resource(Resource.Type.TRAILER);
-    final Resource expectedBanner = Fixture.Videos.resource(Resource.Type.BANNER);
-    final Resource expectedThumb = Fixture.Videos.resource(Resource.Type.THUMBNAIL);
-    final Resource expectedThumbHalf = Fixture.Videos.resource(Resource.Type.THUMBNAIL_HALF);
+    final Resource expectedVideo = resource(VIDEO);
+    final Resource expectedTrailer = resource(TRAILER);
+    final Resource expectedBanner = resource(BANNER);
+    final Resource expectedThumb = resource(THUMBNAIL);
+    final Resource expectedThumbHalf = resource(THUMBNAIL_HALF);
 
     final var aCommand =
         UpdateVideoCommand.with(

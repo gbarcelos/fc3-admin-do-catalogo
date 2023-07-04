@@ -1,6 +1,6 @@
 package com.fullcycle.admin.catalogo.infrastructure.services;
 
-import com.fullcycle.admin.catalogo.domain.video.Resource;
+import com.fullcycle.admin.catalogo.domain.resource.Resource;
 import java.util.List;
 
 public interface StorageService {

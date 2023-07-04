@@ -1,5 +1,7 @@
 package com.fullcycle.admin.catalogo.domain.video;
 
+import com.fullcycle.admin.catalogo.domain.resource.Resource;
+
 public interface MediaResourceGateway {
 
     AudioVideoMedia storeAudioVideo(VideoID anId, Resource aResource);

@@ -1,5 +1,6 @@
 package com.fullcycle.admin.catalogo.domain;
 
+import static com.fullcycle.admin.catalogo.domain.utils.IdUtils.uuid;
 import static io.vavr.API.$;
 import static io.vavr.API.Case;
 import static io.vavr.API.List;
@@ -9,9 +10,8 @@ import com.fullcycle.admin.catalogo.domain.castmember.CastMember;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
 import com.fullcycle.admin.catalogo.domain.category.Category;
 import com.fullcycle.admin.catalogo.domain.genre.Genre;
-import com.fullcycle.admin.catalogo.domain.video.Rating;
-import com.fullcycle.admin.catalogo.domain.video.Resource;
-import com.fullcycle.admin.catalogo.domain.video.Video;
+import com.fullcycle.admin.catalogo.domain.video.*;
+import com.fullcycle.admin.catalogo.domain.resource.Resource;
 import com.github.javafaker.Faker;
 import java.time.Year;
 import java.util.Set;
@@ -132,16 +132,17 @@ public final class Fixture {
       return FAKER.options().option(Rating.values());
     }
 
-    public static Resource resource(final Resource.Type type) {
+    public static Resource resource(final VideoMediaType type) {
       final String contentType =
           Match(type)
               .of(
-                  Case($(List(Resource.Type.VIDEO, Resource.Type.TRAILER)::contains), "video/mp4"),
+                  Case($(List(VideoMediaType.VIDEO, VideoMediaType.TRAILER)::contains), "video/mp4"),
                   Case($(), "image/jpg"));
 
+      final String checksum = uuid();
       final byte[] content = "Conteudo".getBytes();
 
-      return Resource.with(content, contentType, type.name().toLowerCase(), type);
+      return Resource.with(checksum, content, contentType, type.name().toLowerCase());
     }
 
     public static String description() {
@@ -158,6 +159,24 @@ public final class Fixture {
                       Nesse vídeo você entenderá o que é DTO (Data Transfer Object), quando e como utilizar no dia a dia,
                       bem como sua importância para criar aplicações com alta qualidade.
                       """);
+    }
+
+    public static AudioVideoMedia audioVideo(final VideoMediaType type) {
+      final var checksum = uuid();
+      return AudioVideoMedia.with(
+              checksum,
+              type.name().toLowerCase(),
+              "/videos/" + checksum
+      );
+    }
+
+    public static ImageMedia image(final VideoMediaType type) {
+      final var checksum = uuid();
+      return ImageMedia.with(
+              checksum,
+              type.name().toLowerCase(),
+              "/images/" + checksum
+      );
     }
   }
 }
