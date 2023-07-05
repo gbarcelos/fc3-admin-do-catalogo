@@ -1,7 +1,6 @@
 package com.fullcycle.admin.catalogo.application.video.create;
 
 import static com.fullcycle.admin.catalogo.domain.Fixture.Videos.resource;
-import static com.fullcycle.admin.catalogo.domain.utils.IdUtils.uuid;
 import static com.fullcycle.admin.catalogo.domain.video.VideoMediaType.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
@@ -1022,8 +1021,9 @@ public class CreateVideoUseCaseTest extends UseCaseTest {
     when(mediaResourceGateway.storeImage(any(), any()))
         .thenAnswer(
             t -> {
-              final var resource = t.getArgument(1, Resource.class);
-              return ImageMedia.with(uuid(), resource.name(), "/img");
+              final var videoResource = t.getArgument(1, VideoResource.class);
+              final var resource = videoResource.resource();
+              return ImageMedia.with(resource.checksum(), resource.name(), "/img");
             });
   }
 
@@ -1031,9 +1031,9 @@ public class CreateVideoUseCaseTest extends UseCaseTest {
     when(mediaResourceGateway.storeAudioVideo(any(), any()))
         .thenAnswer(
             t -> {
-              final var resource = t.getArgument(1, Resource.class);
-              return AudioVideoMedia.with(
-                  uuid(), uuid(), resource.name(), "/img", "", MediaStatus.PENDING);
+              final var videoResource = t.getArgument(1, VideoResource.class);
+              final var resource = videoResource.resource();
+              return AudioVideoMedia.with(resource.checksum(), resource.name(), "/img");
             });
   }
 }

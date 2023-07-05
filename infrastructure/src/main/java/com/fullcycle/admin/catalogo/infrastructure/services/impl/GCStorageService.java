@@ -32,7 +32,7 @@ public class GCStorageService implements StorageService {
   public Resource get(final String id) {
     final var blob = this.storage.get(this.bucket, id);
     return Resource.with(
-        blob.getContent(), blob.getCrc32cToHexString(), blob.getContentType(), blob.getName());
+        blob.getCrc32cToHexString(), blob.getContent(), blob.getContentType(), blob.getName());
   }
 
   @Override
