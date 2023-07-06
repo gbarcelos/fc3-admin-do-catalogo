@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class InMemoryStorageAPITest {
+public class InMemoryStorageServiceTest {
 
   private InMemoryStorageService target = new InMemoryStorageService();
 
