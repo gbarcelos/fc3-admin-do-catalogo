@@ -92,7 +92,7 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
               .map(
                   it ->
                       this.mediaResourceGateway.storeAudioVideo(
-                          anId, VideoResource.with(it, VIDEO)))
+                          anId, VideoResource.with(VIDEO, it)))
               .orElse(null);
 
       final var aTrailerMedia =
@@ -101,13 +101,13 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
               .map(
                   it ->
                       this.mediaResourceGateway.storeAudioVideo(
-                          anId, VideoResource.with(it, TRAILER)))
+                          anId, VideoResource.with(TRAILER, it)))
               .orElse(null);
 
       final var aBannerMedia =
           aCommand
               .getBanner()
-              .map(it -> this.mediaResourceGateway.storeImage(anId, VideoResource.with(it, BANNER)))
+              .map(it -> this.mediaResourceGateway.storeImage(anId, VideoResource.with(BANNER, it)))
               .orElse(null);
 
       final var aThumbnailMedia =
@@ -115,7 +115,7 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
               .getThumbnail()
               .map(
                   it ->
-                      this.mediaResourceGateway.storeImage(anId, VideoResource.with(it, THUMBNAIL)))
+                      this.mediaResourceGateway.storeImage(anId, VideoResource.with(THUMBNAIL, it)))
               .orElse(null);
 
       final var aThumbHalfMedia =
@@ -124,7 +124,7 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
               .map(
                   it ->
                       this.mediaResourceGateway.storeImage(
-                          anId, VideoResource.with(it, THUMBNAIL_HALF)))
+                          anId, VideoResource.with(THUMBNAIL_HALF, it)))
               .orElse(null);
 
       return this.videoGateway.create(
