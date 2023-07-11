@@ -36,9 +36,21 @@ public class InMemoryStorageServiceTest {
 
     this.target.storage().put(expectedId, expectedResource);
 
-    final var actualContent = target.get(expectedId);
+    final var actualContent = target.get(expectedId).get();
 
     Assertions.assertEquals(expectedResource, actualContent);
+  }
+
+  @Test
+  public void givenInValidResource_whenCallsGet_shouldRetrieveEmpty() {
+    final var expectedResource = Fixture.Videos.resource(THUMBNAIL);
+    final var expectedId = "jajaja";
+
+    this.target.storage().put("item", expectedResource);
+
+    final var actualContent = target.get(expectedId);
+
+    Assertions.assertTrue(actualContent.isEmpty());
   }
 
   @Test

@@ -4,6 +4,7 @@ import com.fullcycle.admin.catalogo.domain.resource.Resource;
 import com.fullcycle.admin.catalogo.infrastructure.services.StorageService;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryStorageService implements StorageService {
@@ -28,8 +29,8 @@ public class InMemoryStorageService implements StorageService {
   }
 
   @Override
-  public Resource get(final String id) {
-    return this.storage.get(id);
+  public Optional<Resource> get(final String id) {
+    return Optional.ofNullable(this.storage.get(id));
   }
 
   @Override

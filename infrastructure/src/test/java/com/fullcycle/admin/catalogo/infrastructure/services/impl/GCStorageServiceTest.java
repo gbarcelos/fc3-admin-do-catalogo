@@ -61,12 +61,24 @@ public class GCStorageServiceTest {
     final Blob blob = mockBlob(expectedResource);
     doReturn(blob).when(storage).get(eq(bucket), eq(expectedId));
 
-    final var actualContent = target.get(expectedId);
+    final var actualContent = target.get(expectedId).get();
 
     Assertions.assertEquals(expectedResource.checksum(), actualContent.checksum());
     Assertions.assertEquals(expectedResource.name(), actualContent.name());
     Assertions.assertEquals(expectedResource.content(), actualContent.content());
     Assertions.assertEquals(expectedResource.contentType(), actualContent.contentType());
+  }
+
+  @Test
+  public void givenAnInValidResource_whenCallsGet_shouldRetrieveEmpty() {
+    final var expectedResource = Fixture.Videos.resource(THUMBNAIL);
+    final var expectedId = expectedResource.name();
+
+    doReturn(null).when(storage).get(eq(bucket), eq(expectedId));
+
+    final var actualContent = target.get(expectedId);
+
+    Assertions.assertTrue(actualContent.isEmpty());
   }
 
   @Test
