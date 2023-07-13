@@ -1,10 +1,9 @@
 package com.fullcycle.admin.catalogo.domain.video;
 
-import com.fullcycle.admin.catalogo.domain.ValueObject;
-
-import java.util.Objects;
-
 import static com.fullcycle.admin.catalogo.domain.utils.IdUtils.uuid;
+
+import com.fullcycle.admin.catalogo.domain.ValueObject;
+import java.util.Objects;
 
 public class AudioVideoMedia extends ValueObject {
 
@@ -80,5 +79,15 @@ public class AudioVideoMedia extends ValueObject {
   @Override
   public int hashCode() {
     return Objects.hash(checksum, rawLocation);
+  }
+
+  public AudioVideoMedia processing() {
+    return AudioVideoMedia.with(
+        id(), checksum(), name(), rawLocation(), encodedLocation(), MediaStatus.PROCESSING);
+  }
+
+  public AudioVideoMedia completed(final String encodedPath) {
+    return AudioVideoMedia.with(
+        id(), checksum(), name(), rawLocation(), encodedPath, MediaStatus.COMPLETED);
   }
 }
