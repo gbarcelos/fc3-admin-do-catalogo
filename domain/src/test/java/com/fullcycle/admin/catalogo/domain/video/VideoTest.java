@@ -219,7 +219,7 @@ public class VideoTest {
   }
 
   @Test
-  public void givenValidVideo_whenCallsSetTrailer_shouldReturnUpdated() {
+  public void givenValidVideo_whenCallsSetTrailer_shouldReturnUpdated() throws InterruptedException {
     // given
     final var expectedTitle = "System Design Interviews";
     final var expectedDescription =
@@ -253,6 +253,8 @@ public class VideoTest {
 
     final var aTrailerMedia = AudioVideoMedia.with("abc", "Trailer.mp4", "/123/videos");
 
+    Thread.sleep(1);
+
     // when
     final var actualVideo = Video.with(aVideo).setTrailer(aTrailerMedia);
 
@@ -281,7 +283,7 @@ public class VideoTest {
   }
 
   @Test
-  public void givenValidVideo_whenCallsSetBanner_shouldReturnUpdated() {
+  public void givenValidVideo_whenCallsSetBanner_shouldReturnUpdated() throws InterruptedException {
     // given
     final var expectedTitle = "System Design Interviews";
     final var expectedDescription =
@@ -314,6 +316,8 @@ public class VideoTest {
             expectedMembers);
 
     final var aBannerMedia = ImageMedia.with("abc", "Trailer.mp4", "/123/videos");
+
+    Thread.sleep(1);
 
     // when
     final var actualVideo = Video.with(aVideo).setBanner(aBannerMedia);
@@ -408,7 +412,7 @@ public class VideoTest {
   }
 
   @Test
-  public void givenValidVideo_whenCallsSetThumbnailHalf_shouldReturnUpdated() {
+  public void givenValidVideo_whenCallsSetThumbnailHalf_shouldReturnUpdated() throws InterruptedException {
     // given
     final var expectedTitle = "System Design Interviews";
     final var expectedDescription =
@@ -441,6 +445,8 @@ public class VideoTest {
             expectedMembers);
 
     final var aThumbMedia = ImageMedia.with("abc", "Trailer.mp4", "/123/videos");
+
+    Thread.sleep(1);
 
     // when
     final var actualVideo = Video.with(aVideo).setThumbnailHalf(aThumbMedia);
