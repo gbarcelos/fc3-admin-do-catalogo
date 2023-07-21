@@ -155,7 +155,8 @@ public class VideoTest {
   }
 
   @Test
-  public void givenValidVideo_whenCallsSetVideo_shouldReturnUpdated() throws InterruptedException {
+  public void givenValidVideo_whenCallsUpdateVideoMedia_shouldReturnUpdated()
+      throws InterruptedException {
     // given
     final var expectedTitle = "System Design Interviews";
     final var expectedDescription =
@@ -173,6 +174,7 @@ public class VideoTest {
     final var expectedCategories = Set.of(CategoryID.unique());
     final var expectedGenres = Set.of(GenreID.unique());
     final var expectedMembers = Set.of(CastMemberID.unique());
+    final var expectedDomainEventSize = 1;
 
     final var aVideo =
         Video.newVideo(
@@ -192,7 +194,7 @@ public class VideoTest {
     Thread.sleep(1);
 
     // when
-    final var actualVideo = Video.with(aVideo).setVideo(aVideoMedia);
+    final var actualVideo = Video.with(aVideo).updateVideoMedia(aVideoMedia);
 
     // then
     assertNotNull(actualVideo);
@@ -215,11 +217,19 @@ public class VideoTest {
     assertTrue(actualVideo.getThumbnail().isEmpty());
     assertTrue(actualVideo.getThumbnailHalf().isEmpty());
 
+    assertEquals(expectedDomainEventSize, actualVideo.getDomainEvents().size());
+
+    final var actualEvent = (VideoMediaCreated) actualVideo.getDomainEvents().get(0);
+    assertEquals(aVideo.getId().getValue(), actualEvent.resourceId());
+    assertEquals(aVideoMedia.rawLocation(), actualEvent.filePath());
+    assertNotNull(actualEvent.occurredOn());
+
     assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()));
   }
 
   @Test
-  public void givenValidVideo_whenCallsSetTrailer_shouldReturnUpdated() throws InterruptedException {
+  public void givenValidVideo_whenCallsUpdateTrailerMedia_shouldReturnUpdated()
+      throws InterruptedException {
     // given
     final var expectedTitle = "System Design Interviews";
     final var expectedDescription =
@@ -237,6 +247,7 @@ public class VideoTest {
     final var expectedCategories = Set.of(CategoryID.unique());
     final var expectedGenres = Set.of(GenreID.unique());
     final var expectedMembers = Set.of(CastMemberID.unique());
+    final var expectedDomainEventSize = 1;
 
     final var aVideo =
         Video.newVideo(
@@ -254,9 +265,8 @@ public class VideoTest {
     final var aTrailerMedia = AudioVideoMedia.with("abc", "Trailer.mp4", "/123/videos");
 
     Thread.sleep(1);
-
     // when
-    final var actualVideo = Video.with(aVideo).setTrailer(aTrailerMedia);
+    final var actualVideo = Video.with(aVideo).updateTrailerMedia(aTrailerMedia);
 
     // then
     assertNotNull(actualVideo);
@@ -279,11 +289,19 @@ public class VideoTest {
     assertTrue(actualVideo.getThumbnail().isEmpty());
     assertTrue(actualVideo.getThumbnailHalf().isEmpty());
 
+    assertEquals(expectedDomainEventSize, actualVideo.getDomainEvents().size());
+
+    final var actualEvent = (VideoMediaCreated) actualVideo.getDomainEvents().get(0);
+    assertEquals(aVideo.getId().getValue(), actualEvent.resourceId());
+    assertEquals(aTrailerMedia.rawLocation(), actualEvent.filePath());
+    assertNotNull(actualEvent.occurredOn());
+
     assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()));
   }
 
   @Test
-  public void givenValidVideo_whenCallsSetBanner_shouldReturnUpdated() throws InterruptedException {
+  public void givenValidVideo_whenCallsUpdateBannerMedia_shouldReturnUpdated()
+      throws InterruptedException {
     // given
     final var expectedTitle = "System Design Interviews";
     final var expectedDescription =
@@ -320,7 +338,7 @@ public class VideoTest {
     Thread.sleep(1);
 
     // when
-    final var actualVideo = Video.with(aVideo).setBanner(aBannerMedia);
+    final var actualVideo = Video.with(aVideo).updateBannerMedia(aBannerMedia);
 
     // then
     assertNotNull(actualVideo);
@@ -347,7 +365,7 @@ public class VideoTest {
   }
 
   @Test
-  public void givenValidVideo_whenCallsSetThumbnail_shouldReturnUpdated()
+  public void givenValidVideo_whenCallsUpdateThumbnailMedia_shouldReturnUpdated()
       throws InterruptedException {
     // given
     final var expectedTitle = "System Design Interviews";
@@ -385,7 +403,7 @@ public class VideoTest {
     Thread.sleep(1);
 
     // when
-    final var actualVideo = Video.with(aVideo).setThumbnail(aThumbMedia);
+    final var actualVideo = Video.with(aVideo).updateThumbnailMedia(aThumbMedia);
 
     // then
     assertNotNull(actualVideo);
@@ -412,7 +430,8 @@ public class VideoTest {
   }
 
   @Test
-  public void givenValidVideo_whenCallsSetThumbnailHalf_shouldReturnUpdated() throws InterruptedException {
+  public void givenValidVideo_whenCallsUpdateThumbnailHalfMedia_shouldReturnUpdated()
+      throws InterruptedException {
     // given
     final var expectedTitle = "System Design Interviews";
     final var expectedDescription =
@@ -449,7 +468,7 @@ public class VideoTest {
     Thread.sleep(1);
 
     // when
-    final var actualVideo = Video.with(aVideo).setThumbnailHalf(aThumbMedia);
+    final var actualVideo = Video.with(aVideo).updateThumbnailHalfMedia(aThumbMedia);
 
     // then
     assertNotNull(actualVideo);
