@@ -23,6 +23,11 @@ public class Resource extends ValueObject {
     return new Resource(checksum, content, contentType, name);
   }
 
+  public static Resource with(
+      final byte[] content, final String checksum, final String contentType, final String name) {
+    return new Resource(checksum, content, contentType, name);
+  }
+
   public String checksum() {
     return checksum;
   }
