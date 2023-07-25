@@ -15,6 +15,8 @@ import com.fullcycle.admin.catalogo.domain.Fixture;
 import com.fullcycle.admin.catalogo.domain.video.*;
 import java.time.Year;
 import java.util.Set;
+
+import com.fullcycle.admin.catalogo.infrastructure.video.models.CreateVideoRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

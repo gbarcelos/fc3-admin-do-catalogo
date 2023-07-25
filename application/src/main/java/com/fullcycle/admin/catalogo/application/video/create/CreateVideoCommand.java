@@ -56,6 +56,35 @@ public record CreateVideoCommand(
         thumbnailHalf);
   }
 
+  public static CreateVideoCommand with(
+      final String title,
+      final String description,
+      final Integer launchedAt,
+      final Double duration,
+      final Boolean opened,
+      final Boolean published,
+      final String rating,
+      final Set<String> categories,
+      final Set<String> genres,
+      final Set<String> members) {
+    return new CreateVideoCommand(
+        title,
+        description,
+        launchedAt,
+        duration,
+        opened,
+        published,
+        rating,
+        categories,
+        genres,
+        members,
+        null,
+        null,
+        null,
+        null,
+        null);
+  }
+
   public Optional<Resource> getVideo() {
     return Optional.ofNullable(video);
   }
