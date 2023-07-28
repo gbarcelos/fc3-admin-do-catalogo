@@ -3,6 +3,8 @@ package com.fullcycle.admin.catalogo.infrastructure.api;
 import static com.fullcycle.admin.catalogo.domain.utils.CollectionUtils.mapTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpHeaders.*;
@@ -56,19 +58,12 @@ import org.springframework.test.web.servlet.MockMvc;
 public class VideoAPITest {
 
   @Autowired private MockMvc mvc;
-
   @Autowired private ObjectMapper mapper;
-
   @MockBean private CreateVideoUseCase createVideoUseCase;
-
   @MockBean private GetVideoByIdUseCase getVideoByIdUseCase;
-
   @MockBean private UpdateVideoUseCase updateVideoUseCase;
-
   @MockBean private DeleteVideoUseCase deleteVideoUseCase;
-
   @MockBean private ListVideosUseCase listVideosUseCase;
-
   @MockBean private GetMediaUseCase getMediaUseCase;
   @MockBean private UploadMediaUseCase uploadMediaUseCase;
 
@@ -145,24 +140,21 @@ public class VideoAPITest {
 
     final var actualCmd = cmdCaptor.getValue();
 
-    Assertions.assertEquals(expectedTitle, actualCmd.title());
-    Assertions.assertEquals(expectedDescription, actualCmd.description());
-    Assertions.assertEquals(expectedLaunchYear.getValue(), actualCmd.launchedAt());
-    Assertions.assertEquals(expectedDuration, actualCmd.duration());
-    Assertions.assertEquals(expectedOpened, actualCmd.opened());
-    Assertions.assertEquals(expectedPublished, actualCmd.published());
-    Assertions.assertEquals(expectedRating.getName(), actualCmd.rating());
-    Assertions.assertEquals(expectedCategories, actualCmd.categories());
-    Assertions.assertEquals(expectedGenres, actualCmd.genres());
-    Assertions.assertEquals(expectedMembers, actualCmd.members());
-    Assertions.assertEquals(expectedVideo.getOriginalFilename(), actualCmd.getVideo().get().name());
-    Assertions.assertEquals(
-        expectedTrailer.getOriginalFilename(), actualCmd.getTrailer().get().name());
-    Assertions.assertEquals(
-        expectedBanner.getOriginalFilename(), actualCmd.getBanner().get().name());
-    Assertions.assertEquals(
-        expectedThumb.getOriginalFilename(), actualCmd.getThumbnail().get().name());
-    Assertions.assertEquals(
+    assertEquals(expectedTitle, actualCmd.title());
+    assertEquals(expectedDescription, actualCmd.description());
+    assertEquals(expectedLaunchYear.getValue(), actualCmd.launchedAt());
+    assertEquals(expectedDuration, actualCmd.duration());
+    assertEquals(expectedOpened, actualCmd.opened());
+    assertEquals(expectedPublished, actualCmd.published());
+    assertEquals(expectedRating.getName(), actualCmd.rating());
+    assertEquals(expectedCategories, actualCmd.categories());
+    assertEquals(expectedGenres, actualCmd.genres());
+    assertEquals(expectedMembers, actualCmd.members());
+    assertEquals(expectedVideo.getOriginalFilename(), actualCmd.getVideo().get().name());
+    assertEquals(expectedTrailer.getOriginalFilename(), actualCmd.getTrailer().get().name());
+    assertEquals(expectedBanner.getOriginalFilename(), actualCmd.getBanner().get().name());
+    assertEquals(expectedThumb.getOriginalFilename(), actualCmd.getThumbnail().get().name());
+    assertEquals(
         expectedThumbHalf.getOriginalFilename(), actualCmd.getThumbnailHalf().get().name());
   }
 
@@ -245,21 +237,21 @@ public class VideoAPITest {
 
     final var actualCmd = cmdCaptor.getValue();
 
-    Assertions.assertEquals(expectedTitle, actualCmd.title());
-    Assertions.assertEquals(expectedDescription, actualCmd.description());
-    Assertions.assertEquals(expectedLaunchYear.getValue(), actualCmd.launchedAt());
-    Assertions.assertEquals(expectedDuration, actualCmd.duration());
-    Assertions.assertEquals(expectedOpened, actualCmd.opened());
-    Assertions.assertEquals(expectedPublished, actualCmd.published());
-    Assertions.assertEquals(expectedRating.getName(), actualCmd.rating());
-    Assertions.assertEquals(expectedCategories, actualCmd.categories());
-    Assertions.assertEquals(expectedGenres, actualCmd.genres());
-    Assertions.assertEquals(expectedMembers, actualCmd.members());
-    Assertions.assertTrue(actualCmd.getVideo().isEmpty());
-    Assertions.assertTrue(actualCmd.getTrailer().isEmpty());
-    Assertions.assertTrue(actualCmd.getBanner().isEmpty());
-    Assertions.assertTrue(actualCmd.getThumbnail().isEmpty());
-    Assertions.assertTrue(actualCmd.getThumbnailHalf().isEmpty());
+    assertEquals(expectedTitle, actualCmd.title());
+    assertEquals(expectedDescription, actualCmd.description());
+    assertEquals(expectedLaunchYear.getValue(), actualCmd.launchedAt());
+    assertEquals(expectedDuration, actualCmd.duration());
+    assertEquals(expectedOpened, actualCmd.opened());
+    assertEquals(expectedPublished, actualCmd.published());
+    assertEquals(expectedRating.getName(), actualCmd.rating());
+    assertEquals(expectedCategories, actualCmd.categories());
+    assertEquals(expectedGenres, actualCmd.genres());
+    assertEquals(expectedMembers, actualCmd.members());
+    assertTrue(actualCmd.getVideo().isEmpty());
+    assertTrue(actualCmd.getTrailer().isEmpty());
+    assertTrue(actualCmd.getBanner().isEmpty());
+    assertTrue(actualCmd.getThumbnail().isEmpty());
+    assertTrue(actualCmd.getThumbnailHalf().isEmpty());
   }
 
   @Test
@@ -476,21 +468,21 @@ public class VideoAPITest {
 
     final var actualCmd = cmdCaptor.getValue();
 
-    Assertions.assertEquals(expectedTitle, actualCmd.title());
-    Assertions.assertEquals(expectedDescription, actualCmd.description());
-    Assertions.assertEquals(expectedLaunchYear.getValue(), actualCmd.launchedAt());
-    Assertions.assertEquals(expectedDuration, actualCmd.duration());
-    Assertions.assertEquals(expectedOpened, actualCmd.opened());
-    Assertions.assertEquals(expectedPublished, actualCmd.published());
-    Assertions.assertEquals(expectedRating.getName(), actualCmd.rating());
-    Assertions.assertEquals(expectedCategories, actualCmd.categories());
-    Assertions.assertEquals(expectedGenres, actualCmd.genres());
-    Assertions.assertEquals(expectedMembers, actualCmd.members());
-    Assertions.assertTrue(actualCmd.getVideo().isEmpty());
-    Assertions.assertTrue(actualCmd.getTrailer().isEmpty());
-    Assertions.assertTrue(actualCmd.getBanner().isEmpty());
-    Assertions.assertTrue(actualCmd.getThumbnail().isEmpty());
-    Assertions.assertTrue(actualCmd.getThumbnailHalf().isEmpty());
+    assertEquals(expectedTitle, actualCmd.title());
+    assertEquals(expectedDescription, actualCmd.description());
+    assertEquals(expectedLaunchYear.getValue(), actualCmd.launchedAt());
+    assertEquals(expectedDuration, actualCmd.duration());
+    assertEquals(expectedOpened, actualCmd.opened());
+    assertEquals(expectedPublished, actualCmd.published());
+    assertEquals(expectedRating.getName(), actualCmd.rating());
+    assertEquals(expectedCategories, actualCmd.categories());
+    assertEquals(expectedGenres, actualCmd.genres());
+    assertEquals(expectedMembers, actualCmd.members());
+    assertTrue(actualCmd.getVideo().isEmpty());
+    assertTrue(actualCmd.getTrailer().isEmpty());
+    assertTrue(actualCmd.getBanner().isEmpty());
+    assertTrue(actualCmd.getThumbnail().isEmpty());
+    assertTrue(actualCmd.getThumbnailHalf().isEmpty());
   }
 
   @Test
@@ -626,15 +618,14 @@ public class VideoAPITest {
     verify(listVideosUseCase).execute(captor.capture());
 
     final var actualQuery = captor.getValue();
-    Assertions.assertEquals(expectedPage, actualQuery.page());
-    Assertions.assertEquals(expectedPerPage, actualQuery.perPage());
-    Assertions.assertEquals(expectedDirection, actualQuery.direction());
-    Assertions.assertEquals(expectedSort, actualQuery.sort());
-    Assertions.assertEquals(expectedTerms, actualQuery.terms());
-    Assertions.assertEquals(Set.of(CategoryID.from(expectedCategories)), actualQuery.categories());
-    Assertions.assertEquals(
-        Set.of(CastMemberID.from(expectedCastMembers)), actualQuery.castMembers());
-    Assertions.assertEquals(Set.of(GenreID.from(expectedGenres)), actualQuery.genres());
+    assertEquals(expectedPage, actualQuery.page());
+    assertEquals(expectedPerPage, actualQuery.perPage());
+    assertEquals(expectedDirection, actualQuery.direction());
+    assertEquals(expectedSort, actualQuery.sort());
+    assertEquals(expectedTerms, actualQuery.terms());
+    assertEquals(Set.of(CategoryID.from(expectedCategories)), actualQuery.categories());
+    assertEquals(Set.of(CastMemberID.from(expectedCastMembers)), actualQuery.castMembers());
+    assertEquals(Set.of(GenreID.from(expectedGenres)), actualQuery.genres());
   }
 
   @Test
@@ -680,14 +671,14 @@ public class VideoAPITest {
     verify(listVideosUseCase).execute(captor.capture());
 
     final var actualQuery = captor.getValue();
-    Assertions.assertEquals(expectedPage, actualQuery.page());
-    Assertions.assertEquals(expectedPerPage, actualQuery.perPage());
-    Assertions.assertEquals(expectedDirection, actualQuery.direction());
-    Assertions.assertEquals(expectedSort, actualQuery.sort());
-    Assertions.assertEquals(expectedTerms, actualQuery.terms());
-    Assertions.assertTrue(actualQuery.categories().isEmpty());
-    Assertions.assertTrue(actualQuery.castMembers().isEmpty());
-    Assertions.assertTrue(actualQuery.genres().isEmpty());
+    assertEquals(expectedPage, actualQuery.page());
+    assertEquals(expectedPerPage, actualQuery.perPage());
+    assertEquals(expectedDirection, actualQuery.direction());
+    assertEquals(expectedSort, actualQuery.sort());
+    assertEquals(expectedTerms, actualQuery.terms());
+    assertTrue(actualQuery.categories().isEmpty());
+    assertTrue(actualQuery.castMembers().isEmpty());
+    assertTrue(actualQuery.genres().isEmpty());
   }
 
   @Test
@@ -727,8 +718,8 @@ public class VideoAPITest {
     verify(this.getMediaUseCase).execute(captor.capture());
 
     final var actualCmd = captor.getValue();
-    Assertions.assertEquals(expectedId.getValue(), actualCmd.videoId());
-    Assertions.assertEquals(expectedMediaType.name(), actualCmd.mediaType());
+    assertEquals(expectedId.getValue(), actualCmd.videoId());
+    assertEquals(expectedMediaType.name(), actualCmd.mediaType());
   }
 
   @Test
@@ -774,13 +765,12 @@ public class VideoAPITest {
     verify(this.uploadMediaUseCase).execute(captor.capture());
 
     final var actualCmd = captor.getValue();
-    Assertions.assertEquals(expectedId.getValue(), actualCmd.videoId());
-    Assertions.assertEquals(
-        expectedResource.content(), actualCmd.videoResource().resource().content());
-    Assertions.assertEquals(expectedResource.name(), actualCmd.videoResource().resource().name());
-    Assertions.assertEquals(
+    assertEquals(expectedId.getValue(), actualCmd.videoId());
+    assertEquals(expectedResource.content(), actualCmd.videoResource().resource().content());
+    assertEquals(expectedResource.name(), actualCmd.videoResource().resource().name());
+    assertEquals(
         expectedResource.contentType(), actualCmd.videoResource().resource().contentType());
-    Assertions.assertEquals(expectedType, actualCmd.videoResource().type());
+    assertEquals(expectedType, actualCmd.videoResource().type());
   }
 
   @Test
