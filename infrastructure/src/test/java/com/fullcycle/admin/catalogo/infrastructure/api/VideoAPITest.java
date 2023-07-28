@@ -13,6 +13,7 @@ import com.fullcycle.admin.catalogo.ControllerTest;
 import com.fullcycle.admin.catalogo.application.video.create.CreateVideoCommand;
 import com.fullcycle.admin.catalogo.application.video.create.CreateVideoOutput;
 import com.fullcycle.admin.catalogo.application.video.create.CreateVideoUseCase;
+import com.fullcycle.admin.catalogo.application.video.delete.DeleteVideoUseCase;
 import com.fullcycle.admin.catalogo.application.video.retrieve.get.GetVideoByIdUseCase;
 import com.fullcycle.admin.catalogo.application.video.retrieve.get.VideoOutput;
 import com.fullcycle.admin.catalogo.application.video.update.UpdateVideoCommand;
@@ -51,6 +52,8 @@ public class VideoAPITest {
   @MockBean private GetVideoByIdUseCase getVideoByIdUseCase;
 
   @MockBean private UpdateVideoUseCase updateVideoUseCase;
+
+  @MockBean private DeleteVideoUseCase deleteVideoUseCase;
 
   @Test
   public void givenAValidCommand_whenCallsCreateFull_shouldReturnAnId() throws Exception {
@@ -445,5 +448,23 @@ public class VideoAPITest {
         .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)));
 
     verify(updateVideoUseCase).execute(any());
+  }
+
+  @Test
+  public void givenAValidId_whenCallsDeleteById_shouldDeleteIt() throws Exception {
+    // given
+    final var expectedId = VideoID.unique();
+
+    doNothing().when(deleteVideoUseCase).execute(any());
+
+    // when
+    final var aRequest = delete("/videos/{id}", expectedId.getValue());
+
+    final var response = this.mvc.perform(aRequest);
+
+    // then
+    response.andExpect(status().isNoContent());
+
+    verify(deleteVideoUseCase).execute(eq(expectedId.getValue()));
   }
 }
