@@ -23,8 +23,10 @@ import com.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
 import com.fullcycle.admin.catalogo.domain.genre.GenreID;
+import com.fullcycle.admin.catalogo.domain.validation.Error;
 import com.fullcycle.admin.catalogo.domain.video.*;
 import com.fullcycle.admin.catalogo.infrastructure.video.models.CreateVideoRequest;
+import com.fullcycle.admin.catalogo.infrastructure.video.models.UpdateVideoRequest;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Set;
@@ -386,7 +388,8 @@ public class VideoAPITest {
   }
 
   @Test
-  public void givenAnInvalidCommand_whenCallsUpdateVideo_shouldReturnNotification() throws Exception {
+  public void givenAnInvalidCommand_whenCallsUpdateVideo_shouldReturnNotification()
+      throws Exception {
     // given
     final var wesley = Fixture.CastMembers.wesley();
     final var aulas = Fixture.Categories.aulas();
@@ -407,7 +410,8 @@ public class VideoAPITest {
     final var expectedGenres = Set.of(tech.getId().getValue());
     final var expectedMembers = Set.of(wesley.getId().getValue());
 
-    final var aCmd = new UpdateVideoRequest(
+    final var aCmd =
+        new UpdateVideoRequest(
             expectedTitle,
             expectedDescription,
             expectedDuration,
@@ -417,15 +421,15 @@ public class VideoAPITest {
             expectedRating.getName(),
             expectedMembers,
             expectedCategories,
-            expectedGenres
-    );
+            expectedGenres);
 
     when(updateVideoUseCase.execute(any()))
-            .thenThrow(NotificationException.with(new Error(expectedErrorMessage)));
+        .thenThrow(NotificationException.with(new Error(expectedErrorMessage)));
 
     // when
 
-    final var aRequest = put("/videos/{id}", expectedId.getValue())
+    final var aRequest =
+        put("/videos/{id}", expectedId.getValue())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(aCmd));
@@ -433,11 +437,12 @@ public class VideoAPITest {
     final var response = this.mvc.perform(aRequest);
 
     // then
-    response.andExpect(status().isUnprocessableEntity())
-            .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)))
-            .andExpect(jsonPath("$.errors", hasSize(expectedErrorCount)))
-            .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)));
+    response
+        .andExpect(status().isUnprocessableEntity())
+        .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)))
+        .andExpect(jsonPath("$.errors", hasSize(expectedErrorCount)))
+        .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)));
 
     verify(updateVideoUseCase).execute(any());
   }
