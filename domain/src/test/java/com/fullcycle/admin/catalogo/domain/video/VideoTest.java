@@ -2,6 +2,7 @@ package com.fullcycle.admin.catalogo.domain.video;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.fullcycle.admin.catalogo.domain.UnitTest;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.genre.GenreID;
@@ -11,7 +12,7 @@ import java.time.Year;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-public class VideoTest {
+public class VideoTest extends UnitTest {
 
   @Test
   public void givenValidParams_whenCallsNewVideo_shouldInstantiate() {
