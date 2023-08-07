@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'bugfix/**'
+      - 'feature/**'
   # Habilita o gatilho manual através da interface do Github Actions
   workflow_dispatch:
 
