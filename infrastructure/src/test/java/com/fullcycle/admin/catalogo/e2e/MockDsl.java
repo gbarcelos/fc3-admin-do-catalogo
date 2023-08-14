@@ -3,6 +3,7 @@ package com.fullcycle.admin.catalogo.e2e;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fullcycle.admin.catalogo.ApiTest;
 import com.fullcycle.admin.catalogo.domain.Identifier;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
@@ -164,7 +165,10 @@ public interface MockDsl {
 
   private String given(final String url, final Object body) throws Exception {
     final var aRequest =
-        post(url).contentType(MediaType.APPLICATION_JSON).content(Json.writeValueAsString(body));
+        post(url)
+            .with(ApiTest.ADMIN_JWT)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(Json.writeValueAsString(body));
 
     final var actualId =
         this.mvc()
@@ -180,7 +184,10 @@ public interface MockDsl {
 
   private ResultActions givenResult(final String url, final Object body) throws Exception {
     final var aRequest =
-        post(url).contentType(MediaType.APPLICATION_JSON).content(Json.writeValueAsString(body));
+        post(url)
+            .with(ApiTest.ADMIN_JWT)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(Json.writeValueAsString(body));
 
     return this.mvc().perform(aRequest);
   }
@@ -195,6 +202,7 @@ public interface MockDsl {
       throws Exception {
     final var aRequest =
         get(url)
+            .with(ApiTest.ADMIN_JWT)
             .queryParam("page", String.valueOf(page))
             .queryParam("perPage", String.valueOf(perPage))
             .queryParam("search", search)
@@ -210,6 +218,7 @@ public interface MockDsl {
       throws Exception {
     final var aRequest =
         get(url + anId.getValue())
+            .with(ApiTest.ADMIN_JWT)
             .accept(MediaType.APPLICATION_JSON_UTF8)
             .contentType(MediaType.APPLICATION_JSON_UTF8);
 
@@ -227,6 +236,7 @@ public interface MockDsl {
   private ResultActions retrieveResult(final String url, final Identifier anId) throws Exception {
     final var aRequest =
         get(url + anId.getValue())
+            .with(ApiTest.ADMIN_JWT)
             .accept(MediaType.APPLICATION_JSON_UTF8)
             .contentType(MediaType.APPLICATION_JSON_UTF8);
 
@@ -236,6 +246,7 @@ public interface MockDsl {
   private ResultActions delete(final String url, final Identifier anId) throws Exception {
     final var aRequest =
         MockMvcRequestBuilders.delete(url + anId.getValue())
+            .with(ApiTest.ADMIN_JWT)
             .contentType(MediaType.APPLICATION_JSON);
 
     return this.mvc().perform(aRequest);
@@ -245,6 +256,7 @@ public interface MockDsl {
       throws Exception {
     final var aRequest =
         put(url + anId.getValue())
+            .with(ApiTest.ADMIN_JWT)
             .contentType(MediaType.APPLICATION_JSON)
             .content(Json.writeValueAsString(aRequestBody));
 

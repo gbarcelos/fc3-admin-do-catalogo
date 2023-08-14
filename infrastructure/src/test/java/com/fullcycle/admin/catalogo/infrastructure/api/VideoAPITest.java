@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fullcycle.admin.catalogo.ApiTest;
 import com.fullcycle.admin.catalogo.ControllerTest;
 import com.fullcycle.admin.catalogo.application.video.create.CreateVideoCommand;
 import com.fullcycle.admin.catalogo.application.video.create.CreateVideoOutput;
@@ -45,7 +46,6 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +113,7 @@ public class VideoAPITest {
             .file(expectedBanner)
             .file(expectedThumb)
             .file(expectedThumbHalf)
+            .with(ApiTest.VIDEOS_JWT)
             .param("title", expectedTitle)
             .param("description", expectedDescription)
             .param("year_launched", String.valueOf(expectedLaunchYear.getValue()))
@@ -169,6 +170,7 @@ public class VideoAPITest {
     // when
     final var aRequest =
         multipart("/videos")
+            .with(ApiTest.VIDEOS_JWT)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -219,6 +221,7 @@ public class VideoAPITest {
     // when
     final var aRequest =
         post("/videos")
+            .with(ApiTest.VIDEOS_JWT)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(aCmd));
@@ -258,7 +261,10 @@ public class VideoAPITest {
   public void givenAnEmptyBody_whenCallsCreatePartial_shouldReturnError() throws Exception {
     // when
     final var aRequest =
-        post("/videos").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON);
+        post("/videos")
+            .with(ApiTest.VIDEOS_JWT)
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON);
 
     final var response = this.mvc.perform(aRequest);
 
@@ -277,6 +283,7 @@ public class VideoAPITest {
     // when
     final var aRequest =
         post("/videos")
+            .with(ApiTest.VIDEOS_JWT)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(
@@ -342,7 +349,8 @@ public class VideoAPITest {
     when(getVideoByIdUseCase.execute(any())).thenReturn(VideoOutput.from(aVideo));
 
     // when
-    final var aRequest = get("/videos/{id}", expectedId).accept(MediaType.APPLICATION_JSON);
+    final var aRequest =
+        get("/videos/{id}", expectedId).with(ApiTest.VIDEOS_JWT).accept(MediaType.APPLICATION_JSON);
 
     final var response = this.mvc.perform(aRequest);
 
@@ -401,7 +409,8 @@ public class VideoAPITest {
         .thenThrow(NotFoundException.with(Video.class, expectedId));
 
     // when
-    final var aRequest = get("/videos/{id}", expectedId).accept(MediaType.APPLICATION_JSON);
+    final var aRequest =
+        get("/videos/{id}", expectedId).with(ApiTest.VIDEOS_JWT).accept(MediaType.APPLICATION_JSON);
 
     final var response = this.mvc.perform(aRequest);
 
@@ -450,6 +459,7 @@ public class VideoAPITest {
     // when
     final var aRequest =
         put("/videos/{id}", expectedId.getValue())
+            .with(ApiTest.VIDEOS_JWT)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(aCmd));
@@ -528,6 +538,7 @@ public class VideoAPITest {
 
     final var aRequest =
         put("/videos/{id}", expectedId.getValue())
+            .with(ApiTest.VIDEOS_JWT)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(aCmd));
@@ -553,7 +564,7 @@ public class VideoAPITest {
     doNothing().when(deleteVideoUseCase).execute(any());
 
     // when
-    final var aRequest = delete("/videos/{id}", expectedId.getValue());
+    final var aRequest = delete("/videos/{id}", expectedId.getValue()).with(ApiTest.VIDEOS_JWT);
 
     final var response = this.mvc.perform(aRequest);
 
@@ -588,6 +599,7 @@ public class VideoAPITest {
     // when
     final var aRequest =
         get("/videos")
+            .with(ApiTest.VIDEOS_JWT)
             .queryParam("page", String.valueOf(expectedPage))
             .queryParam("perPage", String.valueOf(expectedPerPage))
             .queryParam("sort", expectedSort)
@@ -649,7 +661,7 @@ public class VideoAPITest {
         .thenReturn(new Pagination<>(expectedPage, expectedPerPage, expectedTotal, expectedItems));
 
     // when
-    final var aRequest = get("/videos").accept(MediaType.APPLICATION_JSON);
+    final var aRequest = get("/videos").with(ApiTest.VIDEOS_JWT).accept(MediaType.APPLICATION_JSON);
 
     final var response = this.mvc.perform(aRequest);
 
@@ -698,7 +710,8 @@ public class VideoAPITest {
 
     // when
     final var aRequest =
-        get("/videos/{id}/medias/{type}", expectedId.getValue(), expectedMediaType.name());
+        get("/videos/{id}/medias/{type}", expectedId.getValue(), expectedMediaType.name())
+            .with(ApiTest.VIDEOS_JWT);
 
     final var response = this.mvc.perform(aRequest);
 
@@ -743,6 +756,7 @@ public class VideoAPITest {
     final var aRequest =
         multipart("/videos/{id}/medias/{type}", expectedId.getValue(), expectedType.name())
             .file(expectedVideo)
+            .with(ApiTest.VIDEOS_JWT)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -790,6 +804,7 @@ public class VideoAPITest {
     final var aRequest =
         multipart("/videos/{id}/medias/INVALID", expectedId.getValue())
             .file(expectedVideo)
+            .with(ApiTest.VIDEOS_JWT)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.MULTIPART_FORM_DATA);
 
