@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Profile;
 import org.threeten.bp.Duration;
 
 @Configuration
-@Profile({"development", "production"})
+@Profile({"!development & !test-integration & !test-e2e"})
 public class GoogleCloudConfig {
   @Bean
   @ConfigurationProperties("google.cloud")
