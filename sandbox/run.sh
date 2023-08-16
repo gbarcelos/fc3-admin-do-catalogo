@@ -1,3 +1,5 @@
+# Criar as docker networks
+docker network create adm_videos_services
 
 # Criar as pastas com permissões
 mkdir -m 777 .docker
