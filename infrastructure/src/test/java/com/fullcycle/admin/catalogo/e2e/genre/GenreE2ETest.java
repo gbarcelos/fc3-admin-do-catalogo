@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fullcycle.admin.catalogo.ApiTest;
 import com.fullcycle.admin.catalogo.E2ETest;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.genre.GenreID;
@@ -210,6 +211,7 @@ public class GenreE2ETest implements MockDsl {
 
     final var aRequest =
         get("/genres/123")
+            .with(ApiTest.ADMIN_JWT)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON);
 
@@ -263,22 +265,18 @@ public class GenreE2ETest implements MockDsl {
 
     final var actualId = givenAGenre(expectedName, true, expectedCategories);
 
-    final var aRequestBody = new UpdateGenreRequest(
-            expectedName,
-            mapTo(expectedCategories, CategoryID::getValue),
-            expectedIsActive
-    );
+    final var aRequestBody =
+        new UpdateGenreRequest(
+            expectedName, mapTo(expectedCategories, CategoryID::getValue), expectedIsActive);
 
-    updateAGenre(actualId, aRequestBody)
-            .andExpect(status().isOk());
+    updateAGenre(actualId, aRequestBody).andExpect(status().isOk());
 
     final var actualGenre = genreRepository.findById(actualId.getValue()).get();
 
     Assertions.assertEquals(expectedName, actualGenre.getName());
     Assertions.assertTrue(
-            expectedCategories.size() == actualGenre.getCategoryIDs().size()
-                    && expectedCategories.containsAll(actualGenre.getCategoryIDs())
-    );
+        expectedCategories.size() == actualGenre.getCategoryIDs().size()
+            && expectedCategories.containsAll(actualGenre.getCategoryIDs()));
     Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
     Assertions.assertNotNull(actualGenre.getCreatedAt());
     Assertions.assertNotNull(actualGenre.getUpdatedAt());
@@ -296,14 +294,11 @@ public class GenreE2ETest implements MockDsl {
 
     final var actualId = givenAGenre(expectedName, false, expectedCategories);
 
-    final var aRequestBody = new UpdateGenreRequest(
-            expectedName,
-            mapTo(expectedCategories, CategoryID::getValue),
-            expectedIsActive
-    );
+    final var aRequestBody =
+        new UpdateGenreRequest(
+            expectedName, mapTo(expectedCategories, CategoryID::getValue), expectedIsActive);
 
-    updateAGenre(actualId, aRequestBody)
-            .andExpect(status().isOk());
+    updateAGenre(actualId, aRequestBody).andExpect(status().isOk());
 
     final var actualGenre = genreRepository.findById(actualId.getValue()).get();
 
@@ -324,8 +319,7 @@ public class GenreE2ETest implements MockDsl {
 
     final var actualId = givenAGenre("Ação", true, List.of(filmes));
 
-    deleteAGenre(actualId)
-            .andExpect(status().isNoContent());
+    deleteAGenre(actualId).andExpect(status().isNoContent());
 
     Assertions.assertFalse(this.genreRepository.existsById(actualId.getValue()));
     Assertions.assertEquals(0, genreRepository.count());
@@ -336,8 +330,7 @@ public class GenreE2ETest implements MockDsl {
     Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
     Assertions.assertEquals(0, genreRepository.count());
 
-    deleteAGenre(GenreID.from("12313"))
-            .andExpect(status().isNoContent());
+    deleteAGenre(GenreID.from("12313")).andExpect(status().isNoContent());
 
     Assertions.assertEquals(0, genreRepository.count());
   }

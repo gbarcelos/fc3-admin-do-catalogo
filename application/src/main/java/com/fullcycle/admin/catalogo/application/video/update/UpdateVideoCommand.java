@@ -1,6 +1,6 @@
 package com.fullcycle.admin.catalogo.application.video.update;
 
-import com.fullcycle.admin.catalogo.domain.video.Resource;
+import com.fullcycle.admin.catalogo.domain.resource.Resource;
 import java.util.Optional;
 import java.util.Set;
 
@@ -21,6 +21,37 @@ public record UpdateVideoCommand(
     Resource banner,
     Resource thumbnail,
     Resource thumbnailHalf) {
+
+  public static UpdateVideoCommand with(
+      final String id,
+      final String title,
+      final String description,
+      final Integer launchedAt,
+      final Double duration,
+      final Boolean opened,
+      final Boolean published,
+      final String rating,
+      final Set<String> categories,
+      final Set<String> genres,
+      final Set<String> members) {
+    return with(
+        id,
+        title,
+        description,
+        launchedAt,
+        duration,
+        opened,
+        published,
+        rating,
+        categories,
+        genres,
+        members,
+        null,
+        null,
+        null,
+        null,
+        null);
+  }
 
   public static UpdateVideoCommand with(
       final String id,
